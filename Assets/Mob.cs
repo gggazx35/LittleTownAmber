@@ -2,50 +2,81 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mob : MonoBehaviour
+public interface IHasInventory
 {
-    protected Inventroy inventroy;
-    //[SerializeField] protected Vector2 direction;
-    protected int selectedSlot;
-    [SerializeField] protected float defaultReach = 3.0f;
+    Inventroy inventroy { get; }
+    int selectedSlot { get; }
+}
+
+public interface IMobStat
+{
+    float maxHealth { get; }
+    float health { get; set; }
+    float strength { get; }
+}
+
+public interface IHumanMob : IHasInventory
+{
+    Hand hand { get; }
+    void HoldItemAt(int i);
+}
+
+public interface IDamageable
+{
+    public void TakeDamage(Mob _cause, float _amount);
+}
+
+public class Mob : MonoBehaviour, IHumanMob, IMobStat, IDamageable
+{
+    protected Inventroy m_inventroy;
+    protected int m_selectedSlot;
+    [SerializeField] protected float m_defaultReach = 3.0f;
 
 
-    [SerializeField] protected float maxHealth = 20.0f;
-    [SerializeField] protected float health = 20.0f;
-    [SerializeField] protected float strength = 1.0f;
+    [SerializeField] protected float m_maxHealth = 20.0f;
+    [SerializeField] protected float m_health = 20.0f;
+    [SerializeField] protected float m_strength = 1.0f;
 
 
-    [SerializeField] protected LayerMask enemyMask;
+    [SerializeField] protected LayerMask m_enemyMask;
     
-    [SerializeField] protected Hand hand;
+    [SerializeField] protected Hand m_hand;
+
+    // properties
+    public Inventroy inventroy { get => m_inventroy; }
+    public Hand hand { get => m_hand; }
+
+    public int selectedSlot { get => m_selectedSlot; }
+    public float maxHealth { get => m_maxHealth; }
+    public float health 
+    { 
+        get => m_health; 
+        set
+        {
+            m_health = Mathf.Clamp(value, 0.0f, maxHealth);
+        } 
+    }
+    public float strength { get => m_strength; }
 
 
     protected Movement movement;
-    public void SelectItemAt(int i)
+
+    // IHumanMob
+    public void HoldItemAt(int i)
     {
         hand.GrabItem(inventroy.GetItemAt(i));
-        selectedSlot = i;
+        m_selectedSlot = i;
     }
 
-    public Inventroy GetInventory()
+    // IDamageable
+    public void TakeDamage(Mob _cause, float _amount)
     {
-        return inventroy;
-    }
-
-    public RaycastHit2D RaycastAt(float distance, int layer)
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, movement.GetDirection(), defaultReach * distance, layer);
-        Debug.DrawRay(transform.position, movement.GetDirection(), Color.green, defaultReach * distance);
-        return hit;
-    }
-    public RaycastHit2D RaycastAt(int layer)
-    {
-        return RaycastAt(1.0f, layer);
+        m_health = Mathf.Clamp(health - _cause.CalcuateDamage(_amount), 0.0f, maxHealth);
     }
 
     public int GetEnemyMask()
     {
-        return enemyMask; 
+        return m_enemyMask; 
     }
 
     public float CalcuateDamage(float _damage)
@@ -53,20 +84,37 @@ public class Mob : MonoBehaviour
         return strength + _damage;
     }
 
-    public void TakeDamage(Mob _cause, float _amount)
-    {
-        health = Mathf.Clamp(health - _cause.CalcuateDamage(_amount), 0.0f, maxHealth);
-        
-    }
+    
 
     public Mob InRange()
     {
         //Debug.Log("FSAIJJOFJNHIOAUGBYIUS");
-        return hand.InRange(this, selectedSlot);
+        if (hand.handedItem is IDetectRange)
+        {
+            return (hand.handedItem as IDetectRange).InRange(this, selectedSlot);
+        }
+        return null;
     }
 
-    public void Use()
+    public void UseItem()
     {
         hand.Use(this, selectedSlot);
+    }
+
+    public RaycastHit2D RaycastAt(float distance, int layer)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, movement.GetDirection(), m_defaultReach * distance, layer);
+        Debug.DrawRay(transform.position, movement.GetDirection(), Color.green, m_defaultReach * distance);
+        return hit;
+    }
+    public RaycastHit2D RaycastAt(int layer)
+    {
+        return RaycastAt(1.0f, layer);
+    }
+
+    public Item MoveHoldingItem()
+    {
+        inventroy.RemoveItemAt(selectedSlot);
+        return inventroy.RemoveItemAt(selectedSlot);
     }
 }

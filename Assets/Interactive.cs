@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interactive : MonoBehaviour
+public interface IInteractive
+{
+    public void Interact(Mob _mob);
+}
+
+public class Interactive : MonoBehaviour, IInteractive
 {
     
-    public virtual void Interact(Player _player)
+    public virtual void Interact(Mob _mob)
     {
     } 
 }

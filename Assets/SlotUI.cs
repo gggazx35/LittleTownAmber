@@ -5,30 +5,31 @@ using UnityEngine.UI;
 
 public class SlotUI : MonoBehaviour
 {
-    Inventroy inventroy;
-    Image image;
-    [SerializeField] private int slotIndex = 0;
+    Inventroy m_inventroy;
+
+    Image m_image;
+    [SerializeField] private int m_slotIndex = 0;
 
     private void Start()
     {
-        image = GetComponentInParent<Image>();
+        m_image = GetComponentInParent<Image>();
     }
 
     private void FixedUpdate()
     {
-        Item item = inventroy.GetItemAt(slotIndex);
+        Item item = m_inventroy.GetItemAt(m_slotIndex);
         if (item != null) {
-            image.sprite = item.GetSprite();
+            m_image.sprite = item.GetSprite();
         }
     }
 
     public void SetInventory(Inventroy _inventroy)
     {
-        inventroy = _inventroy;
+        m_inventroy = _inventroy;
     }
 
     public void SelectItem()
     {
-        GameManager.instance.player.SelectItemAt(slotIndex);
+        GameManager.instance.player.HoldItemAt(m_slotIndex);
     }
 }

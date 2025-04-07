@@ -9,7 +9,7 @@ public class Player : Mob
     // Start is called before the first frame update
     void Start()
     {
-        inventroy = new Inventroy(16);
+        m_inventroy = new Inventroy(16);
         GameManager.instance.inventoryUI.SetInventory(inventroy);
         movement = GetComponent<Movement>();
     }
@@ -20,7 +20,7 @@ public class Player : Mob
         movement.MoveByAxis(Input.GetAxisRaw("Horizontal"));
         if (Input.GetMouseButtonDown(0))
         {
-            hand.Use(this, selectedSlot);
+            UseItem();
         }
 
         if (Input.GetMouseButtonDown(1))

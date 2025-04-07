@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class Movement : MonoBehaviour
 {
@@ -52,11 +51,11 @@ public class Movement : MonoBehaviour
         //Vector2 target = new Vector2(Mathf.Abs(_target.x), _target.y);
         if (isFacingRight)
         {
-            hand.right = direction.normalized;
+            //hand.right = direction.normalized;
         }
         else
         {
-            hand.right = -(direction.normalized);
+           // hand.right = -(direction.normalized);
         }
     }
 

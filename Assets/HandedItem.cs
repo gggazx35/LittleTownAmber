@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public interface IDetectRange
+{
+    public Mob InRange(Mob _mob, int _slot);
+}
+
+
 public class HandedItem : MonoBehaviour
 {
     protected Item item;
@@ -13,18 +19,9 @@ public class HandedItem : MonoBehaviour
         Perform(_mob);
         int durability = item.GetItemTag().ReduceDurability();
         if (durability == 0) {
-            _mob.GetInventory().RemoveItemAt(_slot);
+            _mob.inventroy.RemoveItemAt(_slot);
             Destroy(gameObject);
         }
-    }
-
-    public virtual Mob InRange(Mob _mob, int _slot)
-    {
-        RaycastHit2D hit = _mob.RaycastAt(_mob.GetEnemyMask());
-        if (hit) {
-            return hit.transform.GetComponent<Mob>();
-        }
-        return null;
     }
 
     public void SetItem(Item _item)

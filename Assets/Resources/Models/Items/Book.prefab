@@ -9,10 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3736167012859158661}
-  - component: {fileID: 6372490219642868464}
-  - component: {fileID: 8001260831500709879}
+  - component: {fileID: 2418392697735876921}
   m_Layer: 0
-  m_Name: Dagger
+  m_Name: Book
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,15 +25,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4024086381505864986}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.9294484, w: 0.36895213}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 58530143674161103}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 136.698}
---- !u!114 &6372490219642868464
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2418392697735876921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,31 +42,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4024086381505864986}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fcd514353da90c44828a61a9b3be1ec, type: 3}
+  m_Script: {fileID: 11500000, guid: 5430a1a9e2bea134f8ac6b2e22161879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 0
---- !u!95 &8001260831500709879
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4024086381505864986}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b4b67b81cbaf8e54d888c1a465781759, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5783992016926412940
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +118,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
-  m_Sprite: {fileID: 21300000, guid: 41863ae17976613428f5bd419e59877b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2083e517a59d1dc478263366bcf2f777, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -29,13 +29,14 @@ public class Chest : Interactive
         return go;
     }
 
-    public override void Interact(Player _player)
+    public override void Interact(Mob _mob)
     {
         //if (playerDetector.IsPlayerDetected())
         //{
         foreach (var item in items)
         {
-            SpawnItemObject(item.Create());
+            item.Create().SpawnItemObject(transform);
+            //SpawnItemObject(item.Create());
         }
         items.Clear();
         //}

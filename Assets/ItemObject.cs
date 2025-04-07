@@ -85,6 +85,14 @@ public class Item
         return Resources.Load<GameObject>("Models/Items/" + type.ToString());
     }
 
+    public GameObject SpawnItemObject(Transform _transform)
+    {
+        GameObject go = GameObject.Instantiate(GameManager.instance.itemObjectPrefeb,
+            _transform.position, _transform.rotation);
+        go.GetComponent<ItemObject>().SetItem(this);
+        return go;
+    }
+
     public ItemTag GetItemTag()
     {
         return itemTag;
@@ -115,9 +123,12 @@ public class ItemObject : Interactive
         return item;
     }
 
-    public override void Interact(Player _player)
+    public override void Interact(Mob _mob)
     {
         Debug.Log("se");
-        _player.GetInventory().AddItemObject(this);
+        if (_mob != null)
+        {
+            _mob.inventroy.AddItemObject(this);
+        }
     }
 }

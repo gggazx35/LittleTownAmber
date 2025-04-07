@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandedDagger : HandedItem
+public class HandedDagger : HandedItem, IDetectRange
 {
     private Animator animator;
-    private float timer = 0.0f;
+    [SerializeField] private float timer = 0.0f;
     
     private void Start()
     {
@@ -24,13 +24,14 @@ public class HandedDagger : HandedItem
     {
         WeaponItemTag weaponTag = item.GetItemTag() as WeaponItemTag;
         RaycastHit2D hit = _mob.RaycastAt(weaponTag.GetRange(), _mob.GetEnemyMask());
+        AttackAnimation();
         if (hit)
         {
             Mob other = hit.transform.gameObject.GetComponent<Mob>();
             if (other)
             {
                 other.TakeDamage(_mob, weaponTag.GetDamage());
-                AttackAnimation();
+                
                 Debug.Log("Att");
             }
         }
@@ -41,13 +42,13 @@ public class HandedDagger : HandedItem
         if(timer <= 0.0f)
         {
             WeaponItemTag weaponTag = item.GetItemTag() as WeaponItemTag;
-            timer = weaponTag.attackSpeed;
+            timer = 1.0f / weaponTag.attackSpeed;
             
             base.Use(_mob, _slot);
         }
     }
 
-    public override Mob InRange(Mob _mob, int _slot)
+    public Mob InRange(Mob _mob, int _slot)
     {
         WeaponItemTag weaponTag = item.GetItemTag() as WeaponItemTag;
         RaycastHit2D hit = _mob.RaycastAt(weaponTag.GetRange(), _mob.GetEnemyMask());
@@ -58,14 +59,12 @@ public class HandedDagger : HandedItem
         return null;
     }
 
+
     private void AttackAnimation()
     {
         if (animator == null) return;
+        WeaponItemTag weaponTag = item.GetItemTag() as WeaponItemTag;
         animator.SetTrigger("Attack");
-    }
-
-    IEnumerator Attack(float _sec)
-    {
-        yield return new WaitForSeconds(_sec);
+        animator.SetFloat("AttackSpeed", weaponTag.attackSpeed);
     }
 }

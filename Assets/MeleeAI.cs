@@ -15,7 +15,6 @@ public class MeleeAI : MonoBehaviour
 
     private RaycastHit2D hit;
     public GameObject target;
-    private float distance;
     public bool inRange;
 
 
@@ -61,7 +60,7 @@ public class MeleeAI : MonoBehaviour
 
         if (mob.InRange() != null)
         {
-            mob.Use();
+            mob.UseItem();
             return;
         }
 
