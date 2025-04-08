@@ -13,8 +13,18 @@ public class Stand : Interactive, IHasInventory
         m_inventory = new Inventroy(1);
     }
 
-    public virtual void Interact(Mob _mob)
+    public override void Interact(Mob _mob)
     {
-        inventroy.AddItem(_mob.GetHoldingItem());
+        //Debug.Log(_mob.inventroy.GetItemAt(_mob.selectedSlot).type);
+        if (!inventroy.IsFull())
+        {
+            _mob.MoveHoldingItem(inventroy);
+            Debug.Log(inventroy.GetItemAt(0).type);
+        }
+        else
+        {
+            Debug.Log("spillll");
+            inventroy.SpillAllItems(transform);
+        }
     }
 }

@@ -5,7 +5,7 @@ using static UnityEditor.Progress;
 
 public class Inventroy
 {
-    Item[] items;
+    private Item[] items;
 
     public Inventroy(int _inventorySize)
     {
@@ -21,10 +21,11 @@ public class Inventroy
         return item;
     }
 
-    public Item MoveItemInto(Inventroy _target, int _idx)
+    public Item ExchangeItem(Inventroy _target, int _idx)
     {
         if(!_target.IsFull())
         {
+            Debug.Log("not full");
             return _target.AddItem(RemoveItemAt(_idx));
         }
         return null;
@@ -34,7 +35,7 @@ public class Inventroy
     {
         for (int i = 0; i < items.Length; i++)
         {
-            if (items[i] != null)
+            if (items[i] == null)
             {
                 return false;
             }
@@ -54,7 +55,8 @@ public class Inventroy
         }
         return null;
     }
-
+    
+    
 
     public Item RemoveItemAt(int i)
     {
@@ -66,4 +68,15 @@ public class Inventroy
     public Item GetItemAt(int i) {
         return items[i];
     }
+
+
+    public void SpillAllItems(Transform _transform)
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            RemoveItemAt(i)?.SpawnItemObject(_transform);
+        }
+    }
+
+    
 }

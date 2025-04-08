@@ -28,10 +28,9 @@ public interface IDamageable
 
 public class Mob : MonoBehaviour, IHumanMob, IMobStat, IDamageable
 {
+    [SerializeField] protected float m_defaultReach = 3.0f;
     protected Inventroy m_inventroy;
     protected int m_selectedSlot;
-    [SerializeField] protected float m_defaultReach = 3.0f;
-
 
     [SerializeField] protected float m_maxHealth = 20.0f;
     [SerializeField] protected float m_health = 20.0f;
@@ -45,7 +44,6 @@ public class Mob : MonoBehaviour, IHumanMob, IMobStat, IDamageable
     // properties
     public Inventroy inventroy { get => m_inventroy; }
     public Hand hand { get => m_hand; }
-
     public int selectedSlot { get => m_selectedSlot; }
     public float maxHealth { get => m_maxHealth; }
     public float health 
@@ -96,9 +94,14 @@ public class Mob : MonoBehaviour, IHumanMob, IMobStat, IDamageable
         return null;
     }
 
+    public Item GetHoldingItem()
+    {
+        return inventroy.GetItemAt(selectedSlot);
+    }
+
     public void UseItem()
     {
-        hand.Use(this, selectedSlot);
+        hand.Use(this);
     }
 
     public RaycastHit2D RaycastAt(float distance, int layer)
@@ -107,14 +110,13 @@ public class Mob : MonoBehaviour, IHumanMob, IMobStat, IDamageable
         Debug.DrawRay(transform.position, movement.GetDirection(), Color.green, m_defaultReach * distance);
         return hit;
     }
-    public RaycastHit2D RaycastAt(int layer)
+    public RaycastHit2D RaycastAt(int _layer)
     {
-        return RaycastAt(1.0f, layer);
+        return RaycastAt(1.0f, _layer);
     }
 
-    public Item MoveHoldingItem()
+    public void MoveHoldingItem(Inventroy _targetInventory)
     {
-        inventroy.RemoveItemAt(selectedSlot);
-        return inventroy.RemoveItemAt(selectedSlot);
+        if(!_targetInventory.IsFull()) _targetInventory.AddItem(hand.handedItem.Unhand(this, selectedSlot));
     }
 }

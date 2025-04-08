@@ -21,17 +21,17 @@ public class Hand : MonoBehaviour, IHoldItem
     public GameObject handedItemObject { get => m_handedItemObject; }
 
 
-    private void Start()
+
+    public void Use(Mob _mob)
     {
-        //movement = owner.GetComponent<Movement>();
+        if(handedItem != null) handedItem.Use(_mob);
     }
 
-    public void Use(Mob _mob, int _slot)
+    public Item MoveItem()
     {
-        if(handedItem != null) handedItem.Use(_mob, _slot);
+        
+        return m_handedItem;
     }
-
-    
 
     public void GrabItem(Item _item)
     {
@@ -43,7 +43,7 @@ public class Hand : MonoBehaviour, IHoldItem
         m_handedItemObject.transform.SetParent(transform, false);
         
         m_handedItem = handedItemObject.GetComponent<HandedItem>();
-        m_handedItem.SetItem(_item);
+        
     }
 
 }

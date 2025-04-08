@@ -18,7 +18,7 @@ public class HandedKey : HandedItem
             Door door = hit.transform.gameObject.GetComponent<Door>();
             if (door)
             {
-                KeyItemTag keyTag = item.GetItemTag() as KeyItemTag;
+                KeyItemTag keyTag = _mob.GetHoldingItem().GetItemTag() as KeyItemTag;
                 door.Unlock(keyTag.GetId());
             }
         }
