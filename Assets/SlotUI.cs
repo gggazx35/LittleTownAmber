@@ -20,6 +20,9 @@ public class SlotUI : MonoBehaviour
         Item item = m_inventroy.GetItemAt(m_slotIndex);
         if (item != null) {
             m_image.sprite = item.GetSprite();
+        } else
+        {
+            m_image.sprite = new Item(ItemType.Missing).GetSprite();
         }
     }
 

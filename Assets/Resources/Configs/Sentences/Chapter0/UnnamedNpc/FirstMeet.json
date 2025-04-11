@@ -1,0 +1,20 @@
+{
+  "lines": [
+    {
+      "text": "supfafgaudfasuidftasdaysdt"
+    },
+    {
+      "text": "uhh.. would you like to get help?",
+      "dicisions": [
+        {
+          "text": "yes",
+          "then": "answer/yes"
+        },
+        {
+          "text": "no",
+          "then": "answer/no"
+        }
+      ]
+    }
+  ]
+}

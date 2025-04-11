@@ -87,9 +87,10 @@ public class Mob : MonoBehaviour, IHumanMob, IMobStat, IDamageable
     public Mob InRange()
     {
         //Debug.Log("FSAIJJOFJNHIOAUGBYIUS");
+        if (hand.handedItem == null) return null;
         if (hand.handedItem is IDetectRange)
         {
-            return (hand.handedItem as IDetectRange).InRange(this, selectedSlot);
+            return (hand.handedItem as IDetectRange).InRange(this);
         }
         return null;
     }
@@ -117,6 +118,23 @@ public class Mob : MonoBehaviour, IHumanMob, IMobStat, IDamageable
 
     public void MoveHoldingItem(Inventroy _targetInventory)
     {
-        if(!_targetInventory.IsFull()) _targetInventory.AddItem(hand.handedItem.Unhand(this, selectedSlot));
+        if(!_targetInventory.IsFull()) _targetInventory.AddItem(DropHoldingItem());
+    }
+
+    public Item DropHoldingItem()
+    {
+        if (inventroy.GetItemAt(selectedSlot) != null)
+        {
+            Item item = hand.handedItem.Unhand(this);
+            inventroy.RemoveItemAt(selectedSlot);
+            return item;
+        }
+
+        return null;
+    }
+
+    public void ThrowHoldingItemAsObject()
+    {
+        DropHoldingItem()?.SpawnItemObject(transform);
     }
 }

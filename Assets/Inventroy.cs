@@ -3,13 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.Progress;
 
-public class Inventroy
+public interface IInventory
 {
-    private Item[] items;
+    Item[] items { get; }
+    bool IsFull();
+    Item AddItem(Item _item);
+    Item GetItemAt(int _i);
+    Item RemoveItemAt(int i);
+}
+
+
+public class Inventroy : IInventory
+{
+    private Item[] m_items;
+    public Item[] items { get => m_items; }
 
     public Inventroy(int _inventorySize)
     {
-        items = new Item[_inventorySize];
+        m_items = new Item[_inventorySize];
     }
 
     public Item AddItemObject(ItemObject _itemObject)
@@ -21,7 +32,7 @@ public class Inventroy
         return item;
     }
 
-    public Item ExchangeItem(Inventroy _target, int _idx)
+    /*public Item ExchangeItem(Inventroy _target, int _idx)
     {
         if(!_target.IsFull())
         {
@@ -29,7 +40,7 @@ public class Inventroy
             return _target.AddItem(RemoveItemAt(_idx));
         }
         return null;
-    }
+    }*/
 
     public bool IsFull()
     {
@@ -77,6 +88,4 @@ public class Inventroy
             RemoveItemAt(i)?.SpawnItemObject(_transform);
         }
     }
-
-    
 }

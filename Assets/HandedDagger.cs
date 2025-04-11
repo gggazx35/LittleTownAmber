@@ -22,9 +22,10 @@ public class HandedDagger : HandedItem, IDetectRange
 
     protected override void Perform(Mob _mob)
     {
+        Item item = _mob.GetHoldingItem();
         WeaponItemTag weaponTag = item.GetItemTag() as WeaponItemTag;
         RaycastHit2D hit = _mob.RaycastAt(weaponTag.GetRange(), _mob.GetEnemyMask());
-        AttackAnimation();
+        AttackAnimation(_mob);
         if (hit)
         {
             Mob other = hit.transform.gameObject.GetComponent<Mob>();
@@ -37,20 +38,20 @@ public class HandedDagger : HandedItem, IDetectRange
         }
     }
 
-    public override void Use(Mob _mob, int _slot)
+    public override void Use(Mob _mob)
     {
         if(timer <= 0.0f)
         {
-            WeaponItemTag weaponTag = item.GetItemTag() as WeaponItemTag;
+            WeaponItemTag weaponTag = _mob.GetHoldingItem().GetItemTag() as WeaponItemTag;
             timer = 1.0f / weaponTag.attackSpeed;
             
-            base.Use(_mob, _slot);
+            base.Use(_mob);
         }
     }
 
-    public Mob InRange(Mob _mob, int _slot)
+    public Mob InRange(Mob _mob)
     {
-        WeaponItemTag weaponTag = item.GetItemTag() as WeaponItemTag;
+        WeaponItemTag weaponTag = _mob.GetHoldingItem().GetItemTag() as WeaponItemTag;
         RaycastHit2D hit = _mob.RaycastAt(weaponTag.GetRange(), _mob.GetEnemyMask());
         if (hit)
         {
@@ -60,10 +61,10 @@ public class HandedDagger : HandedItem, IDetectRange
     }
 
 
-    private void AttackAnimation()
+    private void AttackAnimation(Mob _mob)
     {
         if (animator == null) return;
-        WeaponItemTag weaponTag = item.GetItemTag() as WeaponItemTag;
+        WeaponItemTag weaponTag = _mob.GetHoldingItem().GetItemTag() as WeaponItemTag;
         animator.SetTrigger("Attack");
         animator.SetFloat("AttackSpeed", weaponTag.attackSpeed);
     }

@@ -27,11 +27,6 @@ public class Hand : MonoBehaviour, IHoldItem
         if(handedItem != null) handedItem.Use(_mob);
     }
 
-    public Item MoveItem()
-    {
-        
-        return m_handedItem;
-    }
 
     public void GrabItem(Item _item)
     {
@@ -39,6 +34,7 @@ public class Hand : MonoBehaviour, IHoldItem
         {
             Destroy(handedItemObject);
         }
+        if (_item == null) return;
         m_handedItemObject = Instantiate(_item.GetPrefeb());
         m_handedItemObject.transform.SetParent(transform, false);
         

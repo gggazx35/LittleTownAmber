@@ -40,6 +40,13 @@ public class KeyItemTag : ItemTag
 }
 
 [System.Serializable]
+public class BookItemTag : ItemTag
+{
+    public string connectedChapterName;
+
+}
+
+[System.Serializable]
 public class WeaponItemTag : ItemTag
 {
     public float range;
@@ -125,7 +132,6 @@ public class ItemObject : Interactive
 
     public override void Interact(Mob _mob)
     {
-        Debug.Log("se");
         if (_mob != null)
         {
             _mob.inventroy.AddItemObject(this);
