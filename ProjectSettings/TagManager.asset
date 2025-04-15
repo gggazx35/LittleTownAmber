@@ -17,8 +17,8 @@ TagManager:
   - Door
   - Interactive
   - Enemy
-  - 
-  - 
+  - PlayerOnLadder
+  - Boundary
   - 
   - 
   - 

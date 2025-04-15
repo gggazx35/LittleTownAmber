@@ -18,11 +18,11 @@ public class Door : MonoBehaviour
     {
         if(keyId == _keyId)
         {
-            Debug.Log("Unlocked");
+            Debug.LogWarning("Unlocked");
             gameObject.SetActive(false);
         } else
         {
-            Debug.Log("Nope");
+            Debug.LogWarning("Nope");
         }
     }
     

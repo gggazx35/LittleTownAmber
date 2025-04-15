@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class Chest : Interactive
 {
-    [SerializeField] private DetectPlayer playerDetector;
     [SerializeField] private List<ItemConfig> items;
     // Start is called before the first frame update
     /*private void OnMouseDown()

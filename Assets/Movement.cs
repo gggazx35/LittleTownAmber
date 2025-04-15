@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    protected float horizontal;
+    protected Vector2 moveAxis;
+
     [SerializeField] protected float speed = 5f;
     [SerializeField] protected float jumpingPower = 5f;
     [SerializeField] private bool isFacingRight = false;
@@ -27,21 +28,21 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        rb.velocity = new Vector2(moveAxis.x * speed, rb.velocity.y);
         if (animator != null)
         {
             if(!isFacingRight)
             {
-                animator.SetFloat("Walk", -horizontal);
+                animator.SetFloat("Walk", -moveAxis.x);
             } else
             {
-                animator.SetFloat("Walk", horizontal);
+                animator.SetFloat("Walk", moveAxis.x);
             }
             //Debug.Log(animator.GetFloat("Walk"));
         }
     }
 
-    protected bool IsGrounded()
+    public bool IsGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }
@@ -92,14 +93,19 @@ public class Movement : MonoBehaviour
 
     public void MoveByAxis(float x)
     {
-        horizontal = x;
+        moveAxis.x = x;
+    }
+
+    public void Move(float x)
+    {
+        moveAxis.x = x;
     }
 
     public void Jump()
     {
         if (IsGrounded())
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            rb.velocity = new Vector3(rb.velocity.x, jumpingPower);
         }
     }
 

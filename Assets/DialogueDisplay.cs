@@ -143,7 +143,7 @@ public class DialogueDisplay : MonoBehaviour
 
     public void Next()
     {
-        if (hasDicisions) { Debug.Log("it has decisions"); return; }
+        if (hasDicisions) { return; }
 
         if (coroutine.MoveNext())
         {

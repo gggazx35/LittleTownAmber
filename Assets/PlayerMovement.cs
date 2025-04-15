@@ -7,7 +7,8 @@ public class PlayerMovement : Movement
     // Update is called once per frame
     void Update()
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
+        moveAxis.x = Input.GetAxisRaw("Horizontal");
+        moveAxis.y = Input.GetAxisRaw("Vertical");
 
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {

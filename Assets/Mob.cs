@@ -57,7 +57,7 @@ public class Mob : MonoBehaviour, IHumanMob, IMobStat, IDamageable
     public float strength { get => m_strength; }
 
 
-    protected Movement movement;
+    [SerializeField] protected Movement movement;
 
     // IHumanMob
     public void HoldItemAt(int i)
