@@ -106,7 +106,16 @@ public class Item
     }
 }
 
-public class ItemObject : Interactive
+public class ItemPickupEvent : IEvent
+{
+    public Inventroy inventroy { get; }
+    public ItemPickupEvent(Inventroy _inventroy)
+    {
+        inventroy = _inventroy;
+    }
+}
+
+public class ItemObject : MonoBehaviour
 {
     Item item;
     // Start is called before the first frame update
@@ -115,6 +124,7 @@ public class ItemObject : Interactive
 
     private void Start()
     {
+        EventBus.get().Subscribe<ItemPickupEvent>(gameObject, PickObject);
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = rb.GetComponent<SpriteRenderer>();
         rb.AddForce(Vector2.left * Random.Range(-2.0f, 2.0f), ForceMode2D.Impulse);
@@ -130,11 +140,11 @@ public class ItemObject : Interactive
         return item;
     }
 
-    public override void Interact(Mob _mob)
+    public void PickObject(ItemPickupEvent e)
     {
-        if (_mob != null)
+        if (e != null)
         {
-            _mob.inventroy.AddItemObject(this);
+            e.inventroy.AddItemObject(this);
         }
     }
 }

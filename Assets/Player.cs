@@ -31,7 +31,7 @@ public class Player : Mob
             RaycastHit2D hit = RaycastAt(LayerMask.GetMask("Interactive"));
             if (hit)
             {
-                hit.transform.gameObject.GetComponent<Interactive>().Interact(this);
+                Interactions(hit.transform.gameObject);
             }
         }
 
@@ -64,6 +64,22 @@ public class Player : Mob
         }
     }
 
+    private void Interactions(GameObject _object)
+    {
+        switch (_object.tag)
+        {
+            case "Chest":
+                Debug.LogWarning($"interacting... {_object.GetInstanceID()}");
+                EventBus.get().Publish<ChestOpenEvent>(_object, null);
+                break;
+            case "ItemObject":
+                EventBus.get().Publish<ItemPickupEvent>(_object, new ItemPickupEvent(inventroy));
+                break;
+            case "Ladder":
+                EventBus.get().Publish<ClimbLadderEvent>(_object, new ClimbLadderEvent(this));
+                break;
+        }
+    }
     public void Ladder(Vector2 _position)
     {
         transform.position = _position;

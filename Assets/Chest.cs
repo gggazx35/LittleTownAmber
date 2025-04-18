@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+public class ChestOpenEvent : IEvent
+{
+    public ChestOpenEvent()
+    {
 
+    }
+}
 
-public class Chest : Interactive
+public class Chest : MonoBehaviour
 {
     [SerializeField] private List<ItemConfig> items;
     // Start is called before the first frame update
@@ -20,15 +26,23 @@ public class Chest : Interactive
             items.Clear();
         }
     }*/
-    public GameObject SpawnItemObject(Item _item)
+
+    private void Start()
     {
-        GameObject go = Instantiate(GameManager.instance.itemObjectPrefeb,
-            transform.position, transform.rotation);
-        go.GetComponent<ItemObject>().SetItem(_item);
-        return go;
+        EventBus.get().Subscribe<ChestOpenEvent>(gameObject, ChestOpen);
+        Debug.LogWarning($"{gameObject.GetInstanceID()}");
+
     }
 
-    public override void Interact(Mob _mob)
+    private void ChestOpen(ChestOpenEvent e)
+    {
+        Debug.LogWarning("chestOpened");
+        SpawnItems();
+
+        EventBus.get().Unsubscribe<ChestOpenEvent>(gameObject, ChestOpen);
+    }
+
+    public void SpawnItems()
     {
         //if (playerDetector.IsPlayerDetected())
         //{
