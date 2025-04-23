@@ -13,7 +13,7 @@ public class ChestOpenEvent : IEvent
 
 public class Chest : MonoBehaviour
 {
-    [SerializeField] private List<ItemConfig> items;
+    [SerializeField] private List<ItemTag> items;
     // Start is called before the first frame update
     /*private void OnMouseDown()
     {

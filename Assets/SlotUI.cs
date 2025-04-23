@@ -22,7 +22,7 @@ public class SlotUI : MonoBehaviour
             m_image.sprite = item.GetSprite();
         } else
         {
-            m_image.sprite = new Item(ItemType.Missing).GetSprite();
+            m_image.sprite = null;
         }
     }
 

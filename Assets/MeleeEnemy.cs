@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class MeleeEnemy : Mob
 {
-
+    [SerializeField] private ItemTag initalItem;
     // Start is called before the first frame update
     void Start()
     {
         m_inventroy = new Inventroy(1);
         movement = GetComponent<Movement>();
 
-        ItemConfig item;
-        item.type = ItemType.Dagger.ToString();
-        item.configPath = "Iron";
-        inventroy.AddItem(item.Create());
+        inventroy.AddItem(initalItem.Create());
         HoldItemAt(0);
     }
 }

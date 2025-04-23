@@ -18,7 +18,7 @@ public class BookStand : Stand
         if (spriteRenderer == null) return;
         if(inventroy.GetItemAt(selectedSlot) == null)
         {
-            spriteRenderer.sprite = new Item(ItemType.Missing).GetSprite();
+            spriteRenderer.sprite = null;
         }
         else
             spriteRenderer.sprite = inventroy.GetItemAt(selectedSlot).GetSprite();

@@ -61,6 +61,7 @@ public class Inventroy : IInventory
             if (items[i] == null)
             {
                 items[i] = _item;
+                _item.Move(this, i);
                 return _item;
             }
         }
@@ -72,6 +73,7 @@ public class Inventroy : IInventory
     public Item RemoveItemAt(int i)
     {
         Item item = items[i];
+        item.Move(null, -1);
         items[i] = null;
         return item;
     }

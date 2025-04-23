@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -15,6 +16,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] protected Vector2 direction;
+    [SerializeField] private Vector2 exPos;
 
     // Start is called before the first frame update
     void Start()
@@ -31,14 +33,17 @@ public class Movement : MonoBehaviour
         rb.velocity = new Vector2(moveAxis.x * speed, rb.velocity.y);
         if (animator != null)
         {
-            if(!isFacingRight)
+            animator.SetFloat("FallingSpeed", rb.velocity.y);
+            if ((transform.position.x > exPos.x || transform.position.x < exPos.x) && (moveAxis.x > 0.0f || moveAxis.x < 0.0f))
             {
-                animator.SetFloat("Walk", -moveAxis.x);
-            } else
+                animator.SetBool("Walk", true);
+            }
+            else
             {
-                animator.SetFloat("Walk", moveAxis.x);
+                animator.SetBool("Walk", false);
             }
             //Debug.Log(animator.GetFloat("Walk"));
+            exPos = transform.position;
         }
     }
 
@@ -83,6 +88,18 @@ public class Movement : MonoBehaviour
         }*/
     }
 
+    public void PlayerFlip()
+    {
+        if (moveAxis.x < 0f && !isFacingRight)
+        {
+            Flip();
+        }
+
+        if (moveAxis.x > 0f && isFacingRight)
+        {
+            Flip();
+        }
+    }
     public void Flip()
     {
         isFacingRight = !isFacingRight;

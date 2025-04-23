@@ -35,7 +35,7 @@ public class Hand : MonoBehaviour, IHoldItem
             Destroy(handedItemObject);
         }
         if (_item == null) return;
-        m_handedItemObject = Instantiate(_item.GetPrefeb());
+        m_handedItemObject = Instantiate(_item.GetItemTag().Instance);
         m_handedItemObject.transform.SetParent(transform, false);
         
         m_handedItem = handedItemObject.GetComponent<HandedItem>();

@@ -5,6 +5,7 @@ using UnityEngine;
 public class HandedDagger : HandedItem, IDetectRange
 {
     private Animator animator;
+    private Player p;
     [SerializeField] private float timer = 0.0f;
     
     private void Start()
@@ -18,20 +19,24 @@ public class HandedDagger : HandedItem, IDetectRange
         {
             timer -= Time.deltaTime;
         }
+        else
+        {
+        }
     }
 
     protected override void Perform(Mob _mob)
     {
         Item item = _mob.GetHoldingItem();
         WeaponItemTag weaponTag = item.GetItemTag() as WeaponItemTag;
-        RaycastHit2D hit = _mob.RaycastAt(weaponTag.GetRange(), _mob.GetEnemyMask());
+        RaycastHit2D hit = _mob.RaycastAt(weaponTag.Range, _mob.GetEnemyMask());
         AttackAnimation(_mob);
         if (hit)
         {
             Mob other = hit.transform.gameObject.GetComponent<Mob>();
             if (other)
             {
-                other.TakeDamage(_mob, weaponTag.GetDamage());
+                //EventBus.get().Publish(_mob.gameObject, new MobUseDaggerEvent(item, _mob,));
+                other.TakeDamage(_mob, weaponTag.Damage);
                 
                 Debug.Log("Att");
             }
@@ -42,8 +47,10 @@ public class HandedDagger : HandedItem, IDetectRange
     {
         if(timer <= 0.0f)
         {
+            Player p = _mob.GetComponent<Player>();
+
             WeaponItemTag weaponTag = _mob.GetHoldingItem().GetItemTag() as WeaponItemTag;
-            timer = 1.0f / weaponTag.attackSpeed;
+            timer = 1.0f / weaponTag.AttackSpeed;
             
             base.Use(_mob);
         }
@@ -52,7 +59,7 @@ public class HandedDagger : HandedItem, IDetectRange
     public Mob InRange(Mob _mob)
     {
         WeaponItemTag weaponTag = _mob.GetHoldingItem().GetItemTag() as WeaponItemTag;
-        RaycastHit2D hit = _mob.RaycastAt(weaponTag.GetRange(), _mob.GetEnemyMask());
+        RaycastHit2D hit = _mob.RaycastAt(weaponTag.Range, _mob.GetEnemyMask());
         if (hit)
         {
             return hit.transform.GetComponent<Mob>();
@@ -63,9 +70,17 @@ public class HandedDagger : HandedItem, IDetectRange
 
     private void AttackAnimation(Mob _mob)
     {
-        if (animator == null) return;
         WeaponItemTag weaponTag = _mob.GetHoldingItem().GetItemTag() as WeaponItemTag;
+        if (animator == null)
+        {
+            p = _mob.GetComponent<Player>();
+            if (p != null)
+            {
+                p.AttackAnim(weaponTag.AttackSpeed);
+            }
+            return;
+        }
         animator.SetTrigger("Attack");
-        animator.SetFloat("AttackSpeed", weaponTag.attackSpeed);
+        animator.SetFloat("AttackSpeed", weaponTag.AttackSpeed);
     }
 }

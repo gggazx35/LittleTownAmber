@@ -23,8 +23,8 @@ public class HandedItem : MonoBehaviour
     public virtual void Use(Mob _mob)
     {
         Perform(_mob);
-        int durability = _mob.GetHoldingItem().GetItemTag().ReduceDurability();
-        if (durability == 0) {
+        Item item = _mob.GetHoldingItem();
+        if (item == null) {
             
             Unhand(_mob);
             _mob.inventroy.RemoveItemAt(_mob.selectedSlot);

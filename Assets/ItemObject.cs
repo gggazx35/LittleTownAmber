@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
-[System.Serializable]
+/*[System.Serializable]
 public class ItemTag
 {
     public bool stackable = false;
     public int durability = -1;
     public int ReduceDurability()
     {
-        /*if(durability <= -1)
+        *//*if(durability <= -1)
         {
             return -1;
         }
-*/
+*//*
         if (durability > 0)
         {
             durability--;
@@ -63,23 +64,51 @@ public class WeaponItemTag : ItemTag
     }
 }
 
+*/
+
+public class MobUseItemEvent : IEvent
+{
+    private Mob user;
+    private Item item;
+    public Mob User { get => user; }
+    public Item UsedItem { get => item; }
+    public MobUseItemEvent(Item _item, Mob _mob)
+    {
+        user = _mob;
+        item = _item;
+    }
+}
 
 [System.Serializable]
 public class Item
 {
-    public ItemType type;
+    public ItemType type { get => itemTag.Kind; }
     private ItemTag itemTag;
+    private int durability;
+    private int slot;
+    private Inventroy inventroy;
 
-    public Item(ItemType _type)
+    public Item(ItemTag _itemTag)
     {
-        type = _type;
-        itemTag = new ItemTag();
+        itemTag = _itemTag;
+        durability = _itemTag.MaxDurability;
+
     }
 
-    public Item(ItemType _type, ItemTag _itemTag)
+    public void Move(Inventroy _inventroy, int _slot)
     {
-        type = _type;
-        itemTag = _itemTag;
+        inventroy = _inventroy;
+        slot = _slot;
+    }
+
+    public void ReduceDurability()
+    {
+        durability--;
+        if(durability <= 0)
+        {
+            inventroy.RemoveItemAt(slot);
+            
+        }
     }
 
     public Sprite GetSprite()

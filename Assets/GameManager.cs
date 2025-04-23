@@ -15,7 +15,7 @@ public enum ItemType
     Missing
 }
 
-[System.Serializable]
+/*[System.Serializable]
 public struct ItemConfig
 {
     public string type;
@@ -31,7 +31,7 @@ public struct ItemConfig
         return ItemFactory.Instance().CreateItemFromJson(this);
     }
 }
-
+*/
 [System.Serializable]
 public struct DialogueConfig
 {
@@ -121,7 +121,7 @@ public class ItemFactory
         ItemRegisty.Add(ItemType.Book, typeof(BookItemTag));
         ItemRegisty.Add(ItemType.Missing, typeof(ItemTag));
     }
-    public Type GetItemTagType(ItemType _itemType)
+    /*public Type GetItemTagType(ItemType _itemType)
     {
         if (ItemRegisty.ContainsKey(_itemType))
         {
@@ -131,19 +131,15 @@ public class ItemFactory
         {
             return typeof(ItemTag);
         }
-    }
+    }*/
 
-    public Item CreateItemFromJson(ItemConfig _path)
+    /*public Item CreateItemFromTag(ItemTag _path)
     {
-        string jsondata = Resources.Load<TextAsset>(_path.ToPath()).ToString();
-        Item item = null;
-        ItemType itemType;
-        if (System.Enum.TryParse(_path.type, out itemType))
-        {
-            item = new Item(itemType, (ItemTag)JsonUtility.FromJson(jsondata, GetItemTagType(itemType)));
-        }
+        
+        item = new Item();
+        
         return item;
-    }
+    }*/
 }
 
 
@@ -182,14 +178,12 @@ public class GameManager : MonoBehaviour
     public Player player;
     public GameObject itemObjectPrefeb;
     public InventoryUI inventoryUI;
-    public ItemConfig test;
+    //public ItemConfig test;
     // Start is called before the first frame update
 
     private void Awake()
     {
         instance = this;
-        Item item = ItemFactory.Instance().CreateItemFromJson(test);
-        Debug.Log($"{item.type}, {item.GetItemTag().durability}");
     }
 
     public void LoadScene(string _name)
