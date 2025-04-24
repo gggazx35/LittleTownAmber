@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
 
 public enum ItemType
 {
@@ -181,9 +184,72 @@ public class GameManager : MonoBehaviour
     //public ItemConfig test;
     // Start is called before the first frame update
 
+    [SerializeField] private int killCount;
+
     private void Awake()
     {
         instance = this;
+        killCount = 0;
+    }
+
+    private void MobDeath(MobDeathEvent e)
+    {
+        killCount++;
+        if(e.death == player)
+        {
+            Gameover(e);
+        }
+    }
+    private void Gameover(MobDeathEvent e)
+    {
+        string headline = "RIP Amber, she was";
+        string verb = "died by";
+
+        if (e.cause != null && e.reason == DamageReason.None)
+        {
+            EventBus.get().Publish(new GameoverEvent($"{headline} {verb} a terrible monster named {e.cause}"));
+        }
+        if (e.cause != null && e.reason != DamageReason.None)
+        {
+            switch(e.reason)
+            {
+                case DamageReason.Stab:
+                    verb = "Stabbed by";
+                    break;
+                case DamageReason.Explosion:
+                    verb = "blown up by";
+                    break;
+                case DamageReason.Fall:
+                    verb = "hit the ground too hard while trying to escape from";
+                    break;
+                case DamageReason.FallingStone:
+                    verb = "hit too hard by a stone while she trying to escape from";
+                    break;
+            }
+            EventBus.get().Publish(new GameoverEvent($"{headline} {verb} a terrible monster named {e.cause}"));
+        }
+        if (e.cause == null && e.reason != DamageReason.None)
+        {
+            switch (e.reason)
+            {
+                case DamageReason.Explosion:
+                    verb = "blown up by a bomb";
+                    break;
+                case DamageReason.Fall:
+                    verb = "hit the ground too hard";
+                    break;
+                case DamageReason.FallingStone:
+                    verb = " hit too hard by a stone";
+                    break;
+            }
+            EventBus.get().Publish(new GameoverEvent($"{headline} {verb}"));
+        }
+        Time.timeScale = 0.0f;
+    }
+
+    private void Start()
+    {
+        EventBus.get().Subscribe<MobDeathEvent>(MobDeath);
     }
 
     public void LoadScene(string _name)

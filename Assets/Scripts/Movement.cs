@@ -12,25 +12,51 @@ public class Movement : MonoBehaviour
     [SerializeField] private bool isFacingRight = false;
     protected Rigidbody2D rb;
     private Animator animator;
+    private Mob mob;
     [SerializeField] private Transform hand;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] protected Vector2 direction;
     [SerializeField] private Vector2 exPos;
+    [SerializeField] private float fallling;
+    [SerializeField] private float fal;
 
+    [SerializeField] private bool isFalling;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        mob = GetComponent<Mob>();  
+        fallling = 0.0f;
+        isFalling = false;
     }
 
     // Update is called once per frame
-    
+
 
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(moveAxis.x * speed, rb.velocity.y);
+
+        if (rb.velocity.y < 0.0f && exPos.y > transform.position.y)
+        {
+            fallling -= transform.position.y - exPos.y;
+            isFalling = true;
+        } else
+        {
+            if (isFalling)
+            {
+                isFalling = false;
+                if (fallling > fal)
+                {
+                    mob.TakeDamage(DamageReason.Fall, fallling - fal);
+                }
+                fallling = 0;
+            }
+        }
+
+
         if (animator != null)
         {
             animator.SetFloat("FallingSpeed", rb.velocity.y);
@@ -43,8 +69,8 @@ public class Movement : MonoBehaviour
                 animator.SetBool("Walk", false);
             }
             //Debug.Log(animator.GetFloat("Walk"));
-            exPos = transform.position;
         }
+        exPos = transform.position;
     }
 
     public bool IsGrounded()

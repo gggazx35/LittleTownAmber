@@ -21,9 +21,37 @@ public interface IHumanMob : IHasInventory
     void HoldItemAt(int i);
 }
 
+public class MobDeathEvent : IEvent
+{
+    private Mob m_death;
+    private Mob m_cause; // opt
+    private DamageReason m_reason;
+
+    public Mob death { get => m_death; }
+    public Mob cause { get => m_cause; }
+    public DamageReason reason { get => m_reason; }
+
+    public MobDeathEvent(Mob death, Mob cause, DamageReason reason)
+    {
+        m_death = death;
+        m_cause = cause;
+        m_reason = reason;
+    }
+}
+
+public enum DamageReason
+{
+    None = 0,
+    Fall,
+    FallingStone,
+    Explosion,
+    Stab
+}
+
 public interface IDamageable
 {
     public void TakeDamage(Mob _cause, float _amount);
+    public void TakeDamage(DamageReason _reason, float _amount);
 }
 
 public class Mob : MonoBehaviour, IHumanMob, IMobStat, IDamageable
@@ -40,7 +68,7 @@ public class Mob : MonoBehaviour, IHumanMob, IMobStat, IDamageable
     [SerializeField] protected LayerMask m_enemyMask;
     
     [SerializeField] protected Hand m_hand;
-
+    [SerializeField] private Mob m_recentDamageCause;
     // properties
     public Inventroy inventroy { get => m_inventroy; }
     public Hand hand { get => m_hand; }
@@ -70,6 +98,20 @@ public class Mob : MonoBehaviour, IHumanMob, IMobStat, IDamageable
     public void TakeDamage(Mob _cause, float _amount)
     {
         m_health = Mathf.Clamp(health - _cause.CalcuateDamage(_amount), 0.0f, maxHealth);
+        m_recentDamageCause = _cause;
+        if (m_health <= 0.0f)
+        {
+            EventBus.get().Publish(new MobDeathEvent(this, m_recentDamageCause, DamageReason.None));
+        }
+    }
+
+    public void TakeDamage(DamageReason _reason, float _amount)
+    {
+        m_health = Mathf.Clamp(health - _amount, 0.0f, maxHealth);
+        if (m_health <= 0.0f) {
+            EventBus.get().Publish(new MobDeathEvent(this, m_recentDamageCause, _reason));
+        }
+        m_recentDamageCause = null;
     }
 
     public int GetEnemyMask()

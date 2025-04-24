@@ -2,7 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
-using static UnityEditor.Progress;
+
+public class MobStep : IEvent
+{
+    private Mob m_mob;
+    public Mob mob { get { return m_mob; } }
+
+    public MobStep(Mob mob)
+    {
+        this.m_mob = mob;
+    }
+}
+
+public class MobFall : MobStep
+{
+    private float m_fallingSpeed;
+    public float fallingSpeed { get { return m_fallingSpeed; } }
+
+    public MobFall(Mob _mob, float _fallingSpeed) : base(_mob) {
+        m_fallingSpeed = _fallingSpeed;
+    }
+}
 
 public class MobUseDaggerEvent : MobUseItemEvent
 {
