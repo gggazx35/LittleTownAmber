@@ -15,21 +15,16 @@ public class Movement : MonoBehaviour
     private Mob mob;
     [SerializeField] private Transform hand;
     [SerializeField] private Transform groundCheck;
+    [SerializeField] private Transform headCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] protected Vector2 direction;
     [SerializeField] private Vector2 exPos;
-    [SerializeField] private float fallling;
-    [SerializeField] private float fal;
-
-    [SerializeField] private bool isFalling;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        mob = GetComponent<Mob>();  
-        fallling = 0.0f;
-        isFalling = false;
+        mob = GetComponent<Mob>();
     }
 
     // Update is called once per frame
@@ -38,23 +33,14 @@ public class Movement : MonoBehaviour
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(moveAxis.x * speed, rb.velocity.y);
+        //var h = HeadHit();
+        //if (h != null)
+        //{
+        //    Debug.Log("Auto");
+        //    mob.TakeDamage(DamageReason.None, h.GetComponent<PhysicalDamageObject>().CalcuateDamage());
+        //} 
 
-        if (rb.velocity.y < 0.0f && exPos.y > transform.position.y)
-        {
-            fallling -= transform.position.y - exPos.y;
-            isFalling = true;
-        } else
-        {
-            if (isFalling)
-            {
-                isFalling = false;
-                if (fallling > fal)
-                {
-                    mob.TakeDamage(DamageReason.Fall, fallling - fal);
-                }
-                fallling = 0;
-            }
-        }
+        
 
 
         if (animator != null)
@@ -76,6 +62,10 @@ public class Movement : MonoBehaviour
     public bool IsGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
+    public Collider2D HeadHit()
+    {
+        return Physics2D.OverlapCircle(headCheck.position, 0.2f, groundLayer);
     }
 
     protected void PointAt()

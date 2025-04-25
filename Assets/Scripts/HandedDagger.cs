@@ -32,12 +32,12 @@ public class HandedDagger : HandedItem, IDetectRange
         AttackAnimation(_mob);
         if (hit)
         {
-            Mob other = hit.transform.gameObject.GetComponent<Mob>();
+            Health other = hit.transform.gameObject.GetComponent<Health>();
             if (other)
             {
                 //EventBus.get().Publish(_mob.gameObject, new MobUseDaggerEvent(item, _mob,));
-                other.TakeDamage(_mob, weaponTag.Damage);
-                
+                //other.TakeDamage(_mob, weaponTag.Damage);
+                other.TakeDamage(weaponTag.Damage);
                 Debug.Log("Att");
             }
         }

@@ -7,6 +7,7 @@ using UnityEngine;
 public class Meterial : MonoBehaviour
 {
     [SerializeField] MaterialData materialData;
+    Rigidbody2D rb;
     void MobStepped(MobStep e)
     {
 
@@ -20,6 +21,7 @@ public class Meterial : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         EventBus.get().Subscribe<MobStep>(gameObject, MobStepped);
         EventBus.get().Subscribe<MobFall>(gameObject, MobFallen);
     }
