@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SlotUI : MonoBehaviour
 {
-    Inventroy m_inventroy;
+    Inventory m_inventroy;
 
     Image m_image;
     [SerializeField] private int m_slotIndex = 0;
@@ -26,7 +26,7 @@ public class SlotUI : MonoBehaviour
         }
     }
 
-    public void SetInventory(Inventroy _inventroy)
+    public void SetInventory(Inventory _inventroy)
     {
         m_inventroy = _inventroy;
     }

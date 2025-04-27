@@ -52,6 +52,15 @@ public class Movement : MonoBehaviour
             }
             else
             {
+                //if(moveAxis.x > 0.0f || moveAxis.x < 0.0f)
+                //{
+                //    var push = Physics2D.OverlapCircle(hand.position, 0.2f, groundLayer);
+                //    if(push && push.CompareTag("Push"))
+                //    {
+                //        Debug.Log("pfs");
+                //        push.GetComponent<Rigidbody2D>().AddForce(Vector2.left * moveAxis.x, ForceMode2D.Impulse);
+                //    }
+                //}
                 animator.SetBool("Walk", false);
             }
             //Debug.Log(animator.GetFloat("Walk"));
@@ -156,11 +165,11 @@ public class Movement : MonoBehaviour
     {
         if (isFacingRight)
         {
-            MoveByAxis(x);
+            Move(-x);
             //StopAttack();
         } else
         {
-            MoveByAxis(-x);
+            Move(x);
         }
     }
 }

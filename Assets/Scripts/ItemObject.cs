@@ -86,7 +86,7 @@ public class Item
     private ItemTag itemTag;
     private int durability;
     private int slot;
-    private Inventroy inventroy;
+    private Inventory inventroy;
 
     public Item(ItemTag _itemTag)
     {
@@ -95,7 +95,7 @@ public class Item
 
     }
 
-    public void Move(Inventroy _inventroy, int _slot)
+    public void Move(Inventory _inventroy, int _slot)
     {
         inventroy = _inventroy;
         slot = _slot;
@@ -137,8 +137,8 @@ public class Item
 
 public class ItemPickupEvent : IEvent
 {
-    public Inventroy inventroy { get; }
-    public ItemPickupEvent(Inventroy _inventroy)
+    public Inventory inventroy { get; }
+    public ItemPickupEvent(Inventory _inventroy)
     {
         inventroy = _inventroy;
     }

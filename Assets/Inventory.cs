@@ -1,33 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
-public interface IInventory
+
+public class Inventory : MonoBehaviour
 {
-    Item[] items { get; }
-    bool IsFull();
-    Item AddItem(Item _item);
-    Item GetItemAt(int _i);
-    Item RemoveItemAt(int i);
-}
-
-
-public class Inventroy : IInventory
-{
+    public int inventorySize;
     private Item[] m_items;
     public Item[] items { get => m_items; }
 
-    public Inventroy(int _inventorySize)
+    public void Awake()
     {
-        m_items = new Item[_inventorySize];
+        m_items = new Item[inventorySize];
     }
 
     public Item AddItemObject(ItemObject _itemObject)
     {
         Item item = AddItem(_itemObject.GetItem());
-        if (item != null) {
-            GameObject.Destroy(_itemObject.gameObject);
+        if (item != null)
+        {
+            Destroy(_itemObject.gameObject);
         }
         return item;
     }
@@ -56,7 +48,7 @@ public class Inventroy : IInventory
 
     public Item AddItem(Item _item)
     {
-        for(int i = 0; i < items.Length; i++)
+        for (int i = 0; i < items.Length; i++)
         {
             if (items[i] == null)
             {
@@ -67,8 +59,8 @@ public class Inventroy : IInventory
         }
         return null;
     }
-    
-    
+
+
 
     public Item RemoveItemAt(int i)
     {
@@ -78,7 +70,8 @@ public class Inventroy : IInventory
         return item;
     }
 
-    public Item GetItemAt(int i) {
+    public Item GetItemAt(int i)
+    {
         return items[i];
     }
 
@@ -91,3 +84,4 @@ public class Inventroy : IInventory
         }
     }
 }
+

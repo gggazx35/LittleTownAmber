@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IHasInventory
 {
-    Inventroy inventroy { get; }
+    Inventory inventroy { get; }
     int selectedSlot { get; }
 }
 
@@ -57,7 +57,7 @@ public interface IDamageable
 public class Mob : MonoBehaviour, IHumanMob
 {
     [SerializeField] protected float m_defaultReach = 3.0f;
-    protected Inventroy m_inventroy;
+    protected Inventory m_inventroy;
     protected int m_selectedSlot;
 
     [SerializeField] protected float m_strength = 1.0f;
@@ -68,7 +68,7 @@ public class Mob : MonoBehaviour, IHumanMob
     [SerializeField] protected Hand m_hand;
     [SerializeField] private Mob m_recentDamageCause;
     // properties
-    public Inventroy inventroy { get => m_inventroy; }
+    public Inventory inventroy { get =>     m_inventroy; }
     public Hand hand { get => m_hand; }
     public int selectedSlot { get => m_selectedSlot; }
     //public float maxHealth { get => m_maxHealth; }
@@ -156,7 +156,7 @@ public class Mob : MonoBehaviour, IHumanMob
         return RaycastAt(1.0f, _layer);
     }
 
-    public void MoveHoldingItem(Inventroy _targetInventory)
+    public void MoveHoldingItem(Inventory _targetInventory)
     {
         if(!_targetInventory.IsFull()) _targetInventory.AddItem(DropHoldingItem());
     }

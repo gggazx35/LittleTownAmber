@@ -16,6 +16,10 @@ public class Health : MonoBehaviour
     public void TakeDamage(float _amount)
     {
         health -= _amount;
+        if(health < 0 )
+        {
+            Destroy(gameObject);
+        }
     }
 
     /*public void TakeDamage(Mob _cause, float _amount)

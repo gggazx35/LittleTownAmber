@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
-    private Inventroy inventroy;
-    public void SetInventory(Inventroy _inventroy)
+    private Inventory inventroy;
+    public void SetInventory(Inventory _inventroy)
     {
         foreach (SlotUI slot in transform.GetComponentsInChildren<SlotUI>())
         {

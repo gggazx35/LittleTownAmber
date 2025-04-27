@@ -49,43 +49,48 @@ public class Player : Mob
     bool OnLadder;
     bool Attack;
     Animator animator;
+    UsingWeapon weapon;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        m_inventroy = new Inventroy(16);
+        m_inventroy = GetComponent<Inventory>();
+        weapon = GetComponent<UsingWeapon>();
         OnLadder = false;
         Attack = false;
         GameManager.instance.inventoryUI.SetInventory(inventroy);
         movement = GetComponent<Movement>();
     }
 
-    public void AttackAnim(float _speed)
-    {
-        if (animator != null)
-        {
-            animator.SetTrigger("Attack");
-            animator.SetFloat("AttackSpeed", _speed);
-            Attack = true;
-        }
-    }
+    //public void AttackAnim(float _speed)
+    //{
+    //    if (animator != null)
+    //    {
+    //        animator.SetTrigger("Attack");
+    //        animator.SetFloat("AttackSpeed", _speed);
+    //        Attack = true;
+    //    }
+    //}
 
-    public void EndAttack()
-    {
-        Attack = false;
-    }
+    //public void EndAttack()
+    //{
+    //    Attack = false;
+    //}
 
 
     // Update is called once per frame
     void Update()
     {
-        if (movement == null) Debug.Log("iudkojdfsif");
-        if (Attack == true) return;
+        if (weapon.IsAttack()) { movement.Move(0.0f); return; }
         movement.Move(Input.GetAxisRaw("Horizontal"));
         if (Input.GetMouseButtonDown(0))
         {
-            UseItem();
+            if(GetHoldingItem()?.GetItemTag() is WeaponItemTag)
+            {
+                weapon.Attack(GetHoldingItem().GetItemTag() as WeaponItemTag);
+            }
+            else UseItem();
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -151,10 +156,13 @@ public class Player : Mob
                 EventBus.get().Publish<ChestOpenEvent>(_object, null);
                 break;
             case "ItemObject":
-                EventBus.get().Publish<ItemPickupEvent>(_object, new ItemPickupEvent(inventroy));
+                EventBus.get().Publish(_object, new ItemPickupEvent(inventroy));
                 break;
             case "Ladder":
-                EventBus.get().Publish<ClimbLadderEvent>(_object, new ClimbLadderEvent(this));
+                EventBus.get().Publish(_object, new ClimbLadderEvent(this));
+                break;
+            case "Stand":
+                EventBus.get().Publish(_object, new ClimbLadderEvent(this));
                 break;
             default:
                 Debug.Log("Nothing");

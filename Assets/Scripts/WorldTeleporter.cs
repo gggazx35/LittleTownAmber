@@ -5,8 +5,7 @@ using UnityEngine;
 public class WorldTeleporter : MonoBehaviour
 {
     public Stand stand;
-    
-    // Update is called once per frame
+   
     void Update()
     {
         Item item = stand.GetItem();

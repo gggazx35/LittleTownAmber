@@ -11,16 +11,16 @@ public class BookStand : Stand
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public override void Interact(Mob _mob)
-    {
-        //Debug.Log(_mob.inventroy.GetItemAt(_mob.selectedSlot).type);
-        base.Interact(_mob);
-        if (spriteRenderer == null) return;
-        if(inventroy.GetItemAt(selectedSlot) == null)
-        {
-            spriteRenderer.sprite = null;
-        }
-        else
-            spriteRenderer.sprite = inventroy.GetItemAt(selectedSlot).GetSprite();
-    }
+    //public override void Interact(Mob _mob)
+    //{
+    //    //Debug.Log(_mob.inventroy.GetItemAt(_mob.selectedSlot).type);
+    //    base.Interact(_mob);
+    //    if (spriteRenderer == null) return;
+    //    if(inventroy.GetItemAt(selectedSlot) == null)
+    //    {
+    //        spriteRenderer.sprite = null;
+    //    }
+    //    else
+    //        spriteRenderer.sprite = inventroy.GetItemAt(selectedSlot).GetSprite();
+    //}
 }

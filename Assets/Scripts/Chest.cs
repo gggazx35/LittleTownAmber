@@ -38,8 +38,6 @@ public class Chest : MonoBehaviour
     {
         Debug.LogWarning("chestOpened");
         SpawnItems();
-
-        EventBus.get().Unsubscribe<ChestOpenEvent>(gameObject, ChestOpen);
     }
 
     public void SpawnItems()
@@ -54,6 +52,7 @@ public class Chest : MonoBehaviour
         items.Clear();
         //}
         gameObject.layer = LayerMask.NameToLayer("Default");
+
     }
 
 }

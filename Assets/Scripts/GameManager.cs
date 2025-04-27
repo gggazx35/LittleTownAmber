@@ -15,7 +15,9 @@ public enum ItemType
     Key,
     Dagger,
     Book,
-    Missing
+    Missing,
+    GoldenCoin,
+    Paper
 }
 
 /*[System.Serializable]

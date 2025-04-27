@@ -8,7 +8,7 @@ public class MeleeEnemy : Mob
     // Start is called before the first frame update
     void Start()
     {
-        m_inventroy = new Inventroy(1);
+        m_inventroy = GetComponent<Inventory>();
         movement = GetComponent<Movement>();
 
         inventroy.AddItem(initalItem.Create());

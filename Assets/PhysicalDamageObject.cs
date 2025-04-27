@@ -17,12 +17,17 @@ public class PhysicalDamageObject : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         health = GetComponent<Health>();
-
+        fal = fal / (0.5f + (rb.mass / 2));
     }
 
-    public float CalcuateDamage()
+    private float Damage(float _force)
+    { 
+        return Mathf.Clamp(_force, 0.01f, 20.0f) / rb.mass;
+    }
+
+    public void TakeDamage(float _force, float _mass)
     {
-        return fallling - fal;
+        health.TakeDamage(Damage(_force) * _mass);
     }
 
     public bool IsGrounded()
@@ -44,9 +49,9 @@ public class PhysicalDamageObject : MonoBehaviour
                 isFalling = false;
                 if (fallling > fal)
                 {
-                    health.TakeDamage(CalcuateDamage());
+                    health.TakeDamage(Damage(fallling - fal));/*
                     var phy = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-                    phy?.GetComponent<Health>()?.TakeDamage(CalcuateDamage());
+                    phy?.GetComponent<PhysicalDamageObject>()?.TakeDamage(fallling  - fal, rb.mass);*/
                 }
                 fallling = 0;
             }
@@ -54,13 +59,16 @@ public class PhysicalDamageObject : MonoBehaviour
         exPos = transform.position;
     }
 
-    /*// Update is called once per frame
+    // Update is called once per frame
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        var rb = collision.gameObject.GetComponent<Rigidbody2D>();
-        if (rb != null)
+        var rbx = collision.gameObject.GetComponent<PhysicalDamageObject>();
+        if (rbx != null && isFalling)
         {
-            if(collision.gameObject)
+            if(collision.gameObject.transform.position.y < gameObject.transform.position.y)
+            {
+                rbx.TakeDamage(fallling - fal, rb.mass);
+            }
         }
-    }*/
+    }
 }
