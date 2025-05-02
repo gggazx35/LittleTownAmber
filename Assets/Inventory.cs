@@ -8,6 +8,7 @@ public class Inventory : MonoBehaviour
     public int inventorySize;
     private Item[] m_items;
     public Item[] items { get => m_items; }
+    [SerializeField] private bool dropItems;
 
     public void Awake()
     {
@@ -82,6 +83,11 @@ public class Inventory : MonoBehaviour
         {
             RemoveItemAt(i)?.SpawnItemObject(_transform);
         }
+    }
+
+    public void OnDestroy()
+    {
+        SpillAllItems(gameObject.transform);
     }
 }
 

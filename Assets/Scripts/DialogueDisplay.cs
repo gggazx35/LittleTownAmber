@@ -92,6 +92,7 @@ public class DialogueDisplay : MonoBehaviour
     private Action<int> action;
     IEnumerator coroutine;
     [SerializeField] private DialogueInfo info;
+    [SerializeField] private Dialogue dialogue;
 
     private void Start()
     {
@@ -103,7 +104,7 @@ public class DialogueDisplay : MonoBehaviour
         }
 
         StartDialogue(
-            new DialoguePair(new DialogueConfig("Chapter0/UnnamedNpc/FirstMeet").Create())
+            new DialoguePair(dialogue)
             .Then(
             _decide => {
                 Debug.LogWarning($"huh you just decided {_decide}st/nd/rd/th one nice!");
@@ -147,20 +148,20 @@ public class DialogueDisplay : MonoBehaviour
 
         if (coroutine.MoveNext())
         {
-            hasDicisions = ((Sentence)coroutine.Current).BindDicisions(dicisionTexts);
+            hasDicisions = currentDialogue.dialogue.BindDicisions(dicisionTexts);
             StartCoroutine(FormatReader.TypeText(text, ((Sentence)coroutine.Current).text, info));
         } else
             NextPage();
     }
 
-    public void EndDicision(int _dicision, DialogueConfig _dialogueConfig)
+    public void EndDicision(int _dicision, Dialogue _dialogueConfig)
     {
         foreach (var item in dicisionTexts)
         {
             item.gameObject.SetActive(false);
         }
         hasDicisions = false;
-        if (currentDialogue.Run(ref currentDialogue, _dicision, _dialogueConfig.Create())) 
+        if (currentDialogue.Run(ref currentDialogue, _dicision, _dialogueConfig)) 
         {
 
             coroutine = currentDialogue.dialogue.Continue();

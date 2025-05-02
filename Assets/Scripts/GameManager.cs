@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 using static UnityEditor.PlayerSettings;
 
 public enum ItemType
@@ -58,49 +59,19 @@ public struct DialogueConfig
     }
 }
 
-[System.Serializable]
-public class Dialogue
-{
-    public Sentence[] lines;
-    public Sentence Read()
-    {
-        return lines[0];
-    }
-
-    public IEnumerator Continue()
-    {
-        int line = 0;
-
-        while (line < lines.Length)
-        {
-            yield return lines[line];
-            line++;
-        }
-    }
-}
 
 
 [System.Serializable]
 public struct Sentence
 {
     public string text;
-    public Dicision[] dicisions;
-    public bool BindDicisions(IDicisionBox[] _dicisionBoxes)
-    {
-        Debug.Log($"{text}     {dicisions?.Length}");
-        if(dicisions == null || dicisions.Length == 0) { return false; }
-        for (int i = 0; i < dicisions.Length; i++) {
-            _dicisionBoxes[i]?.Bind(dicisions[i], i);
-        }
-        return true;
-    }
 }
 
 [System.Serializable]
 public struct Dicision
 {
     public string text;
-    public string then;
+    public Dialogue then;
 }
 
 public class ItemFactory

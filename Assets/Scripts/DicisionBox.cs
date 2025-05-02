@@ -11,14 +11,10 @@ public interface IDicisionBox
 public class DicisionBox : MonoBehaviour, IDicisionBox
 {
     DialogueDisplay display;
-    Text text;
+    [SerializeField] private Text text;
     Dicision dicision;
     int index;
 
-    private void Start()
-    {
-        text = GetComponent<Text>();
-    }
 
     public void Bind(Dicision _dicision, int _index)
     {
@@ -35,8 +31,7 @@ public class DicisionBox : MonoBehaviour, IDicisionBox
     }
 
     public void Dicide()
-    {
-        
-        display.EndDicision(index, new DialogueConfig(dicision.then));
+    {        
+        display.EndDicision(index, dicision.then);
     }
 }
