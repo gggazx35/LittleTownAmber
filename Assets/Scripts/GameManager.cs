@@ -148,17 +148,44 @@ public class LanguageManager
     }
 }
 
+
+public class QuestAchieveEvent : IEvent
+{
+    private QuestData quest;
+    public QuestAchieveEvent(QuestData _quest)
+    {
+        quest = _quest;
+    }
+
+    public bool IsQuestAchieved(QuestData data)
+    {
+        return quest == data;
+    }
+}
+
+////////////public class QuestRegisterEvent : IEvent { 
+////////////    private QuestData quest;
+////////////    public QuestRegisterEvent(QuestData _q)
+////////////    {
+////////////        quest = _q;
+////////////    }
+////////////}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public Player player;
+    public GameObject questWindow;
     public GameObject itemObjectPrefeb;
     public InventoryUI inventoryUI;
+    public List<QuestData> quests;
+
+
     //public ItemConfig test;
     // Start is called before the first frame update
 
     [SerializeField] private int killCount;
-
+    [SerializeField] private QuestData testQuest;
     private void Awake()
     {
         instance = this;
@@ -223,10 +250,29 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         EventBus.get().Subscribe<MobDeathEvent>(MobDeath);
+        AddQuest(testQuest, (QuestData q) => { return $"0/{(q as QuestNumber).RequiredAmount}"; });
+    }
+
+    public void AddQuest(QuestData quest, Func<QuestData, string> func)
+    {
+        quests.Add(quest);
+        quest.OnVisualize(func);
+    }
+
+    public bool HasQuest(QuestData questData)
+    {
+        return quests.Contains(questData);
     }
 
     public void LoadScene(string _name)
     {
         SceneManager.LoadScene(_name);
+    }
+
+    
+
+    public static GameManager get()
+    {
+        return instance;
     }
 }

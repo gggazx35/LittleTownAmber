@@ -60,11 +60,11 @@ public class DialoguePair
         next = new DialoguePair(_action);
         return this;
     }
-    public DialoguePair Then(DialoguePair _dialoguePair)
-    {
-        next = _dialoguePair;
-        return next;
-    }
+    //public DialoguePair Then(DialoguePair _dialoguePair)
+    //{
+    //    next = _dialoguePair;
+    //    return next;
+    //}
 
     public DialoguePair Add(Action<int> _action)
     {
@@ -87,12 +87,17 @@ public class DialogueDisplay : MonoBehaviour
     private DialoguePair currentDialogue;
     [SerializeField] private DicisionBox[] dicisionTexts;
     private Text text;
-    private string displayString;
     private bool hasDicisions;
-    private Action<int> action;
     IEnumerator coroutine;
     [SerializeField] private DialogueInfo info;
     [SerializeField] private Dialogue dialogue;
+
+    private static DialogueDisplay instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
@@ -180,4 +185,8 @@ public class DialogueDisplay : MonoBehaviour
         }
     }
 
+    public static DialogueDisplay get()
+    {
+        return instance;
+    }
 }

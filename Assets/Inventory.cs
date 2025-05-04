@@ -66,7 +66,7 @@ public class Inventory : MonoBehaviour
     public Item RemoveItemAt(int i)
     {
         Item item = items[i];
-        item.Move(null, -1);
+        //item.Move(null, -1);
         items[i] = null;
         return item;
     }

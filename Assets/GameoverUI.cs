@@ -11,6 +11,7 @@ public class GameoverEvent : IEvent
     public GameoverEvent(string text)
     {
         this.m_text = text;
+        Debug.Log(text);
     }
     public string text { get { return m_text; } }
 }

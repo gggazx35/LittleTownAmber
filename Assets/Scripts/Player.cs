@@ -164,6 +164,9 @@ public class Player : Mob
             case "Stand":
                 EventBus.get().Publish(_object, new ClimbLadderEvent(this));
                 break;
+            case "Talk":
+                EventBus.get().Publish(_object, new EnterConversationEvent());
+                break;
             default:
                 Debug.Log("Nothing");
                 break;
