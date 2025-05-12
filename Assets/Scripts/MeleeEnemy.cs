@@ -14,4 +14,9 @@ public class MeleeEnemy : Mob
         inventroy.AddItem(initalItem.Create());
         HoldItemAt(0);
     }
+
+    private void FixedUpdate()
+    {
+        movement.PlayerFlip();
+    }
 }

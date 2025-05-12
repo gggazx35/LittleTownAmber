@@ -14,11 +14,14 @@ public class Movement : MonoBehaviour
     private Animator animator;
     private Mob mob;
     [SerializeField] private Transform hand;
+
     [SerializeField] private Transform groundCheck;
     [SerializeField] private Transform headCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] protected Vector2 direction;
     [SerializeField] private Vector2 exPos;
+
+    public Transform GroundCheck => groundCheck;
     // Start is called before the first frame update
     void Start()
     {
@@ -171,5 +174,10 @@ public class Movement : MonoBehaviour
         {
             Move(x);
         }
+    }
+
+    private RaycastHit2D FacingWall(int _mask)
+    {
+        return Physics2D.Raycast(groundCheck.position, FacingRight() ? Vector2.left : Vector2.right, 0.5f, _mask);
     }
 }

@@ -250,7 +250,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         EventBus.get().Subscribe<MobDeathEvent>(MobDeath);
-        AddQuest(testQuest, (QuestData q) => { return $"0/{(q as QuestNumber).RequiredAmount}"; });
+        //AddQuest(testQuest, (QuestData q) => { return $"0/{(q as QuestNumber).RequiredAmount}"; });
     }
 
     public void AddQuest(QuestData quest, Func<QuestData, string> func)

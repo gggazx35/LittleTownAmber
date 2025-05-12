@@ -18,7 +18,6 @@ public struct EventID {
     }
 }
 public class EventIDComparser : IEqualityComparer<EventID>
-
 {
 
     public bool Equals(EventID x, EventID y)

@@ -65,7 +65,7 @@ public class MeleeAI : MonoBehaviour
         
         if (!(mob.GetHoldingItem()?.GetItemTag() is WeaponItemTag)) return;
         
-        weapon.TryAttack(mob.GetHoldingItem()?.GetItemTag() as WeaponItemTag, playerMask);
+        weapon.TryAttack();
         
 
         movement.MoveFacingDirection(1.0f);

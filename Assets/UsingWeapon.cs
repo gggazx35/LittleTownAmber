@@ -6,12 +6,14 @@ using static UnityEditor.PlayerSettings;
 public class UsingWeapon : MonoBehaviour
 {
     private Animator animator;
+    private Mob owner;
     [SerializeField] private float timer = 0.0f;
     [SerializeField] private bool attack;
     [SerializeField] private Transform hand;
     void Start()
     {
         animator = GetComponent<Animator>();
+        owner = GetComponent<Mob>();
     }
 
     IEnumerator CoolDown(WeaponItemTag _tag)
@@ -35,18 +37,25 @@ public class UsingWeapon : MonoBehaviour
         if (!attack) StartCoroutine(CoolDown(_tag));
     }
 
-    public void TryAttack(WeaponItemTag _tag, int _mask)
+    public bool TryAttack()
     {
         if(!attack)
         {
-            var obj = Physics2D.OverlapBox(hand.position, new Vector2(10.0f * _tag.Range, 1.0f), 0.0f, _mask);
-            if(obj)
+            var item = owner.GetHoldingItem();
+            int mask = owner.GetEnemyMask();
+            if (item.GetItemTag() is WeaponItemTag)
             {
-                Attack(_tag);
+                var tag = (WeaponItemTag)item.GetItemTag();
+                var obj = Physics2D.OverlapBox(hand.position, new Vector2(10.0f * tag.Range, 1.0f), 0.0f, mask);
+                if (obj)
+                {
+                    Attack(tag);
+                    return true;
+                }
             }
         }
+        return false;
     }
-
 
     public bool IsAttack()
     {

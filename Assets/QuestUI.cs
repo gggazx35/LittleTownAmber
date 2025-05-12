@@ -19,7 +19,7 @@ public class QuestUI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (visualizeMethod == null) return;
+        //if (visualizeMethod == null) return;
         descriptionText.text = visualizeMethod(quest);
     }
 }
