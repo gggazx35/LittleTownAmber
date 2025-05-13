@@ -7,6 +7,12 @@ public class IEvent
 {
 }
 
+public class ISecuredEvent
+{
+    protected int id;
+}
+
+
 public struct EventID {
     public Type type;
     public int id;
@@ -46,7 +52,7 @@ public class EventBus : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if(gameObject.name == "GameManager") instance = this;
         eventHandlers = new Dictionary<Type, List<Delegate>>();
         uniqueEventHandlers = new Dictionary<EventID, List<Delegate>>();
     }
@@ -107,6 +113,7 @@ public class EventBus : MonoBehaviour
             }
         }
     }
+
 
     public void Publish<TEvent>(GameObject gObject, TEvent eventArgs) where TEvent : IEvent
     {

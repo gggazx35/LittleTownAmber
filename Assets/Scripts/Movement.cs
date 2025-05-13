@@ -11,7 +11,6 @@ public class Movement : MonoBehaviour
     [SerializeField] protected float jumpingPower = 5f;
     [SerializeField] private bool isFacingRight = false;
     protected Rigidbody2D rb;
-    private Animator animator;
     private Mob mob;
     [SerializeField] private Transform hand;
 
@@ -21,6 +20,10 @@ public class Movement : MonoBehaviour
     [SerializeField] protected Vector2 direction;
     [SerializeField] private Vector2 exPos;
 
+    private Animator animator;
+    private BlackboardFloatProperty runningSpeed;
+    private BlackboardFloatProperty fallingSpeed;
+
     public Transform GroundCheck => groundCheck;
     // Start is called before the first frame update
     void Start()
@@ -28,6 +31,10 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         mob = GetComponent<Mob>();
+        Brain brain = GetComponent<Brain>();
+
+        runningSpeed = brain.Memory.GetProperty<BlackboardFloatProperty>("runningSpeed");
+        fallingSpeed = brain.Memory.GetProperty<BlackboardFloatProperty>("fallingSpeed");
     }
 
     // Update is called once per frame
@@ -48,27 +55,18 @@ public class Movement : MonoBehaviour
 
         if (animator != null)
         {
-            animator.SetFloat("FallingSpeed", rb.velocity.y);
+            fallingSpeed.Set(rb.velocity.y);
             if ((transform.position.x > exPos.x || transform.position.x < exPos.x) && (moveAxis.x > 0.0f || moveAxis.x < 0.0f))
             {
-                animator.SetBool("Walk", true);
+                runningSpeed.Set(Mathf.Abs(moveAxis.x));
             }
             else
             {
-                //if(moveAxis.x > 0.0f || moveAxis.x < 0.0f)
-                //{
-                //    var push = Physics2D.OverlapCircle(hand.position, 0.2f, groundLayer);
-                //    if(push && push.CompareTag("Push"))
-                //    {
-                //        Debug.Log("pfs");
-                //        push.GetComponent<Rigidbody2D>().AddForce(Vector2.left * moveAxis.x, ForceMode2D.Impulse);
-                //    }
-                //}
-                animator.SetBool("Walk", false);
+                runningSpeed.Set(Mathf.Abs(moveAxis.x));
             }
-            //Debug.Log(animator.GetFloat("Walk"));
         }
         exPos = transform.position;
+        Move(0.0f);
     }
 
     public bool IsGrounded()
@@ -106,7 +104,7 @@ public class Movement : MonoBehaviour
 
     public void UpdateFlip()
     {
-        if(isFacingRight && direction.x < 0f || !isFacingRight && direction.x > 0f)
+        if((isFacingRight && direction.x < 0.1f) || (!isFacingRight && direction.x > 0.1f))
         {
             Flip();
         }

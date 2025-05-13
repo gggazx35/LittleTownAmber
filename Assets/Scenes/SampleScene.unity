@@ -421,6 +421,18 @@ MonoBehaviour:
     m_Bits: 64
   scopeRadius: 5
   movement: {fileID: 0}
+--- !u!114 &298868929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298868916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 293da0fb31e96ee4eac9e863303bb0c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &465156634
 GameObject:
   m_ObjectHideFlags: 0
@@ -1104,8 +1116,8 @@ Transform:
   m_GameObject: {fileID: 715239072}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -13.2169, y: -3.9853, z: 0}
-  m_LocalScale: {x: 23.0044, y: 1.4044113, z: 1}
+  m_LocalPosition: {x: -13.2169, y: -10.455, z: 0}
+  m_LocalScale: {x: 10.064425, y: 1.4044113, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1665,6 +1677,7 @@ MonoBehaviour:
     m_Bits: 128
   m_hand: {fileID: 724645051}
   m_recentDamageCause: {fileID: 0}
+  m_brain: {fileID: 0}
   movement: {fileID: 0}
   initalItem: {fileID: 0}
 --- !u!114 &972024965
@@ -2283,6 +2296,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 6782758388329843289, guid: 1dd713c62cbda734499a65c99c8278d3, type: 3}
+      propertyPath: m_brain
+      value: 
+      objectReference: {fileID: 298868917}
     - target: {fileID: 9141833829448613294, guid: 1dd713c62cbda734499a65c99c8278d3, type: 3}
       propertyPath: m_LocalPosition.y
       value: -1.1
@@ -2295,6 +2312,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1319504490133728788, guid: 1dd713c62cbda734499a65c99c8278d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 298868917}
+    - targetCorrespondingSourceObject: {fileID: 1319504490133728788, guid: 1dd713c62cbda734499a65c99c8278d3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 298868929}
   m_SourcePrefab: {fileID: 100100000, guid: 1dd713c62cbda734499a65c99c8278d3, type: 3}
 --- !u!4 &1504675009 stripped
 Transform:
@@ -3417,7 +3437,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 0
-  attack: 0
   hand: {fileID: 0}
 --- !u!1001 &6805885078697477884
 PrefabInstance:

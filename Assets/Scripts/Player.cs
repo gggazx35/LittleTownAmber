@@ -88,7 +88,7 @@ public class Player : Mob
         {
             if(GetHoldingItem()?.GetItemTag() is WeaponItemTag)
             {
-                weapon.Attack(GetHoldingItem().GetItemTag() as WeaponItemTag);
+                weapon.Attack();
             }
             else UseItem();
         }

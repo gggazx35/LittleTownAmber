@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TryAttack : DecoratorNode
+public class TryAttack : BehaviourNode
 {
     private UsingWeapon weapon;
     
@@ -11,14 +11,14 @@ public class TryAttack : DecoratorNode
         weapon = _weapon;
     }
 
-    public override State Execute(Brain ownerBrain)
+    protected override State Execute(Brain ownerBrain)
     {
         if (weapon.IsAttack())
             return State.RUNNING;
         else
         {
-            if (weapon.TryAttack()) return State.SUCCESS;
+            if (!weapon.Attack()) return State.FAILURE;
         }
-        return State.FAILURE;
+        return State.SUCCESS;
     } 
 }

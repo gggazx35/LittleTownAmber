@@ -67,19 +67,12 @@ public class Mob : MonoBehaviour, IHumanMob
     
     [SerializeField] protected Hand m_hand;
     [SerializeField] private Mob m_recentDamageCause;
+    [SerializeField] private Brain m_brain;
     // properties
     public Inventory inventroy { get =>     m_inventroy; }
     public Hand hand { get => m_hand; }
+    public Brain brain { get => m_brain; }
     public int selectedSlot { get => m_selectedSlot; }
-    //public float maxHealth { get => m_maxHealth; }
-    //public float health 
-    //{ 
-    //    get => m_health; 
-    //    set
-    //    {
-    //        m_health = Mathf.Clamp(value, 0.0f, maxHealth);
-    //    } 
-    //}
     public float strength { get => m_strength; }
 
 
@@ -91,27 +84,6 @@ public class Mob : MonoBehaviour, IHumanMob
         hand.GrabItem(inventroy.GetItemAt(i));
         m_selectedSlot = i;
     }
-
-    // IDamageable
-    //public void TakeDamage(Mob _cause, float _amount)
-    //{
-    //    m_health = Mathf.Clamp(health - _cause.CalcuateDamage(_amount), 0.0f, maxHealth);
-    //    m_recentDamageCause = _cause;
-    //    if (m_health <= 0.0f)
-    //    {
-    //        EventBus.get().Publish(new MobDeathEvent(this, m_recentDamageCause, DamageReason.None));
-    //    }
-    //}
-
-    //public void TakeDamage(DamageReason _reason, float _amount)
-    //{
-    //    m_health = Mathf.Clamp(health - _amount, 0.0f, maxHealth);
-    //    if (m_health <= 0.0f) {
-    //        EventBus.get().Publish(new MobDeathEvent(this, m_recentDamageCause, _reason));
-    //    }
-    //    m_recentDamageCause = null;
-    //}
-
     public int GetEnemyMask()
     {
         return m_enemyMask; 

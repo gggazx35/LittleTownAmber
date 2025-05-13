@@ -9,36 +9,50 @@ public class MeleeAIBrain : Brain
     [SerializeField] int scopeRadius;
     [SerializeField] Movement movement;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        movement = GetComponent<Movement>();
 
         Memory.AddProperty("enemyMask", new BlackboardIntProperty(enemyMask));
         Memory.AddProperty("obstacleMask", new BlackboardIntProperty(obstacleMask));
 
 
         Memory.AddProperty("isFacingWall", new BlackboardBoolProperty(false));
+        Memory.AddAnimatorLinkedProperty("isAttack", new BlackboardBoolProperty(false), GetComponent<Animator>());
 
         Memory.AddProperty("target", new BlackboardGameObjectProperty(null));
 
-        SeqenceNode firstNode = new SeqenceNode();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        movement = GetComponent<Movement>();
+
+        SelectorNode firstNode = new SelectorNode();
         root = new RootNode(this, firstNode);
 
         firstNode.AttachService(new DetectEnemyService("enemyMask", "target", scopeRadius));
+        //firstNode.AttachDecorator(new BlackBoardSetBoolDeco("isAttack", true));
         //firstNode.AttachService(new DetectWallService("obstacleMask", "isFacingWall", movement));
 
 
         var patrol = new Patrol("isFacingWall", movement)
-            .AttachDecorator(new BlackBoardSetGameObjectDeco("target", true));
+            .AttachDecorator(new BlackBoardSetGameObjectDeco("target", true)
+            
+            );
         
         firstNode.AttachChild(patrol); // ( !null(set) + opposite ) == if target == null
 
-        patrol.AttachService(new DetectWallService("obstacleMask", "isFacingWall", movement));
+        firstNode.AttachService(new DetectWallService("obstacleMask", "isFacingWall", movement));
+
+        var seq = new SeqenceNode();
         
+        seq.AttachChild(new ChaseTask("target", "isAttack", "isFacingWall", GetComponent<Movement>(), GetComponent<Mob>()));
+        seq.AttachChild(new TryAttack(GetComponent<UsingWeapon>()));
 
-        firstNode.AttachChild(new ChaseTask("target", GetComponent<Movement>()));
-
+        firstNode.AttachChild(
+            seq
+            );
     }
 
     

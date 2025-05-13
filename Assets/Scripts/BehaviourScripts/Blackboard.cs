@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public struct TypedID {
@@ -38,17 +39,30 @@ public class TypedIDComparser : IEqualityComparer<TypedID>
 }
 
 
-public abstract class BlackboardProperty
+public abstract class BlackboardProperty : IEvent
 {
 }
 
-public class BlackboardIntProperty : BlackboardProperty
+public abstract class BlackboardPropertyBasicTypeBase : BlackboardProperty
+{
+    protected string name;
+    protected Animator linkedAnim;
+
+    public void LinkAnimator(string _name, Animator _animator)
+    {
+        linkedAnim = _animator;
+        name = _name;
+    }
+}
+
+public class BlackboardIntProperty : BlackboardPropertyBasicTypeBase
 {
     private int _value;
 
     public BlackboardIntProperty(int value)
     {
         _value=value;
+        linkedAnim = null;
     }
 
     public int Get()
@@ -58,17 +72,20 @@ public class BlackboardIntProperty : BlackboardProperty
 
     public void Set(int value)
     {
+        if(linkedAnim != null) linkedAnim.SetInteger(name, value);
         _value = value;
     }
 }
 
-public class BlackboardBoolProperty : BlackboardProperty
+[Serializable]
+public class BlackboardBoolProperty : BlackboardPropertyBasicTypeBase
 {
-    private bool _value;
+    [SerializeField] private bool _value;
 
     public BlackboardBoolProperty(bool value)
     {
         _value=value;
+        linkedAnim = null;
     }
 
     public bool Get()
@@ -78,17 +95,19 @@ public class BlackboardBoolProperty : BlackboardProperty
 
     public void Set(bool value)
     {
+        if (linkedAnim != null) linkedAnim.SetBool(name, value);
         _value = value;
     }
 }
 
-public class BlackboardFloatProperty : BlackboardProperty
+public class BlackboardFloatProperty : BlackboardPropertyBasicTypeBase
 {
     private float _value;
 
     public BlackboardFloatProperty(float value)
     {
         _value = value;
+        linkedAnim = null;
     }
 
     public float Get()
@@ -98,6 +117,7 @@ public class BlackboardFloatProperty : BlackboardProperty
 
     public void Set(float value)
     {
+        if (linkedAnim != null) linkedAnim.SetFloat(name, value);
         _value = value;
     }
 }
@@ -142,10 +162,11 @@ public class BlackboardGameObjectProperty : BlackboardProperty
 public class Blackboard
 {
     private Dictionary<TypedID, BlackboardProperty> properties;
+    private Animator animator;
 
     public Blackboard()
     {
-        properties = new Dictionary<TypedID, BlackboardProperty> ();
+        properties = new Dictionary<TypedID, BlackboardProperty>();
     }
 
     public BlackboardProperty GetProperty(TypedID id)
@@ -154,13 +175,26 @@ public class Blackboard
         return properties[id];
     }
 
+    public void PullAnimator()
+    {
+        if (animator != null) {
+
+        }
+    }
+
     public T GetProperty<T>(TypedID id) where T : BlackboardProperty
     {
         var result = GetProperty(id);
         return result as T;
     }
 
-    public void AddProperty(TypedID id, BlackboardProperty property)
+    public T GetProperty<T>(string name) where T : BlackboardProperty
+    {
+        var result = GetProperty(new TypedID(name, typeof(T)));
+        return result as T;
+    }
+
+    private void AddProperty(TypedID id, BlackboardProperty property)
     {
         properties.Add(id, property);
     }
@@ -170,10 +204,24 @@ public class Blackboard
         AddProperty(new TypedID(name, typeof(T)), val);
     }
 
+    public void AddAnimatorLinkedProperty<T>(string name, T val, Animator animator) where T : BlackboardPropertyBasicTypeBase
+    {
+        val.LinkAnimator(name, animator);
+        AddProperty(new TypedID(name, typeof(T)), val);
+    }
+
+    ////public T MakeProperty<T>(string name, T val) where T : BlackboardProperty
+    ////{
+    ////    var id = new TypedID(name, typeof(T));
+    ////    if(!HasProperty(id)) AddProperty(id, val);
+    ////    return GetProperty<T>(id);
+    ////}
+
     public bool HasProperty(TypedID id)
     {
         return properties.ContainsKey(id);
     }
+
 
     //public bool GetProperty(string name, Type type, out BlackboardProperty property)
     //{
