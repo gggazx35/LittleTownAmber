@@ -6,21 +6,26 @@ public class MeleeAIBrain : Brain
 {
     [SerializeField] LayerMask enemyMask;
     [SerializeField] LayerMask obstacleMask;
+    [SerializeField] LayerMask groundMask;
     [SerializeField] int scopeRadius;
     [SerializeField] Movement movement;
 
     private void Awake()
     {
-
+        Animator animator = GetComponent<Animator>();
         Memory.AddProperty("enemyMask", new BlackboardIntProperty(enemyMask));
         Memory.AddProperty("obstacleMask", new BlackboardIntProperty(obstacleMask));
+        Memory.AddProperty("groundMask", new BlackboardIntProperty(groundMask));
 
 
         Memory.AddProperty("isFacingWall", new BlackboardBoolProperty(false));
-        Memory.AddAnimatorLinkedProperty("isAttack", new BlackboardBoolProperty(false), GetComponent<Animator>());
+        Memory.AddAnimatorLinkedProperty("isAttack", new BlackboardBoolProperty(false), animator);
+
+        
 
         Memory.AddProperty("target", new BlackboardGameObjectProperty(null));
-
+        Memory.AddAnimatorLinkedProperty("fallingSpeed", new BlackboardFloatProperty(0.0f), animator);
+        Memory.AddAnimatorLinkedProperty("runningSpeed", new BlackboardFloatProperty(0.0f), animator);
     }
 
     // Start is called before the first frame update

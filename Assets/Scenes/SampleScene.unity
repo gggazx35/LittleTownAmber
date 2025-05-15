@@ -419,7 +419,10 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 64
-  scopeRadius: 5
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  scopeRadius: 6
   movement: {fileID: 0}
 --- !u!114 &298868929
 MonoBehaviour:
@@ -1116,7 +1119,7 @@ Transform:
   m_GameObject: {fileID: 715239072}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -13.2169, y: -10.455, z: 0}
+  m_LocalPosition: {x: -13.8, y: -7.87, z: 0}
   m_LocalScale: {x: 10.064425, y: 1.4044113, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1727,6 +1730,7 @@ MonoBehaviour:
     m_Bits: 64
   direction: {x: 0, y: 0}
   exPos: {x: 0, y: 0}
+  tet: 0
 --- !u!50 &972024967
 Rigidbody2D:
   serializedVersion: 4
@@ -3438,6 +3442,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timer: 0
   hand: {fileID: 0}
+  attack:
+    _value: 0
 --- !u!1001 &6805885078697477884
 PrefabInstance:
   m_ObjectHideFlags: 0

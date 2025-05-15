@@ -24,6 +24,8 @@ public class Movement : MonoBehaviour
     private BlackboardFloatProperty runningSpeed;
     private BlackboardFloatProperty fallingSpeed;
 
+    [SerializeField] private float tet;
+
     public Transform GroundCheck => groundCheck;
     // Start is called before the first frame update
     void Start()
@@ -53,18 +55,20 @@ public class Movement : MonoBehaviour
         
 
 
-        if (animator != null)
+        
+        fallingSpeed.Set(rb.velocity.y);
+        if ((transform.position.x > exPos.x || transform.position.x < exPos.x) && (moveAxis.x > 0.0f || moveAxis.x < 0.0f))
         {
-            fallingSpeed.Set(rb.velocity.y);
-            if ((transform.position.x > exPos.x || transform.position.x < exPos.x) && (moveAxis.x > 0.0f || moveAxis.x < 0.0f))
-            {
-                runningSpeed.Set(Mathf.Abs(moveAxis.x));
-            }
-            else
-            {
-                runningSpeed.Set(Mathf.Abs(moveAxis.x));
-            }
+            runningSpeed.Set(Mathf.Abs(moveAxis.x));
+
         }
+        else
+        {
+            runningSpeed.Set(0.0f);
+        }
+
+        tet = runningSpeed.Get();
+        
         exPos = transform.position;
         Move(0.0f);
     }
