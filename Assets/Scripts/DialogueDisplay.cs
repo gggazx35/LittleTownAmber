@@ -75,9 +75,18 @@ public class DialoguePair
     public bool Run(ref DialoguePair _dialoguep, int _i, Dialogue _dialogue)
     {
         _dialoguep = next;
-        next.action?.Invoke(_i);
         if(next.dialogue == null) next.dialogue = _dialogue;
         return next != null;
+    }
+}
+
+public class ChoiceEvent : IEvent
+{
+    private int choice;
+    public int Choice => choice;
+    public ChoiceEvent(int _choice)
+    {
+        choice = _choice;
     }
 }
 
@@ -91,6 +100,7 @@ public class DialogueDisplay : MonoBehaviour
     IEnumerator coroutine;
     [SerializeField] private DialogueInfo info;
     [SerializeField] private Dialogue dialogue;
+    [SerializeField] private GameObject choiceListener; 
 
     private static DialogueDisplay instance;
 
@@ -107,16 +117,6 @@ public class DialogueDisplay : MonoBehaviour
         {
             dicision.SetDisplay(this);
         }
-
-        StartDialogue(
-            new DialoguePair(dialogue)
-            .Then(
-            _decide => {
-                Debug.LogWarning($"huh you just decided {_decide}st/nd/rd/th one nice!");
-                Debug.Log(_decide);
-            }
-            )
-            );
         
         //
     }
@@ -129,7 +129,7 @@ public class DialogueDisplay : MonoBehaviour
         }
     }
 
-    public void StartDialogue(DialoguePair _dialoguePair)
+    public void StartDialogue(GameObject _gameObject, DialoguePair _dialoguePair)
     {
         int count = dialogueQueue.Count;
         dialogueQueue.Enqueue(_dialoguePair);
@@ -171,8 +171,8 @@ public class DialogueDisplay : MonoBehaviour
 
             coroutine = currentDialogue.dialogue.Continue();
         }
-        
-        //.Run(_dicision);
+        EventBus.get().Publish(choiceListener, new ChoiceEvent(_dicision));
+            //.Run(_dicision);
     }
 
     public void NextPage()

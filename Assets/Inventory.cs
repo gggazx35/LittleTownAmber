@@ -2,12 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class InventoryChangeEvent : IEvent
+{
+    private Inventory inventory;
+    public Inventory Inventory => inventory;
+
+    public InventoryChangeEvent(Inventory _inventory)
+    {
+        inventory = _inventory;
+    }
+}
+
 
 public class Inventory : MonoBehaviour
 {
+    
     public int inventorySize;
-    private Item[] m_items;
+    
+    
     public Item[] items { get => m_items; }
+    [SerializeField] private Item[] m_items;
     [SerializeField] private bool dropItems;
 
     public void Awake()
@@ -55,6 +69,7 @@ public class Inventory : MonoBehaviour
             {
                 items[i] = _item;
                 _item.Move(this, i);
+                EventBus.get().Publish(new InventoryChangeEvent(this));
                 return _item;
             }
         }
@@ -68,6 +83,7 @@ public class Inventory : MonoBehaviour
         Item item = items[i];
         //item.Move(null, -1);
         items[i] = null;
+        EventBus.get().Publish(new InventoryChangeEvent(this));
         return item;
     }
 
@@ -83,6 +99,19 @@ public class Inventory : MonoBehaviour
         {
             RemoveItemAt(i)?.SpawnItemObject(_transform);
         }
+    }
+
+    public int CountItemNumberWithType(ItemType itemType)
+    {
+        int count = 0;
+        foreach (Item item in items)
+        {
+            if(item.type == itemType)
+            {
+                count++;
+            }
+        }
+        return count;
     }
 
     public void OnDestroy()

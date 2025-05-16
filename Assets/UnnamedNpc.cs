@@ -18,22 +18,16 @@ public class UnnamedNpc : Mob
     void EventSubscribe(GameObject _g)
     {
         EventBus.get().Subscribe(_g, (EnterConversationEvent e) => {
-            DialogueDisplay.get().StartDialogue(new DialoguePair(dialogueFirstMeet).Then(null).Then(
-                (_choice) =>
-                {
-                    if(_choice == 1)
-                    {
-                        GameManager.get().AddQuest(findingWhitePaperQuest, (q) => { return $"0/{(q as QuestNumber).RequiredAmount}"; });
+            if(!GameManager.get().player.GetComponent<QuestListener>().HasQuest(findingWhitePaperQuest))
+                DialogueDisplay.get().StartDialogue(gameObject, new DialoguePair(dialogueFirstMeet));
+        });
 
-                        EventBus.get().Subscribe<QuestAchieveEvent>((q) =>
-                        {
-                            if(q.IsQuestAchieved(findingWhitePaperQuest))
-                                DialogueDisplay.get().StartDialogue(new DialoguePair(dialogueFirstQuestAchieved));
-                        });
-                    }
-                }
-                )
-                );
+        EventBus.get().Subscribe(gameObject, (ChoiceEvent e) =>
+        {
+            if(e.Choice == 0)
+            {
+                GameManager.get().player.GetComponent<QuestListener>().AddQuest(findingWhitePaperQuest);
+            }
         });
     }
 

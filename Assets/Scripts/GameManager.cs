@@ -2,14 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
-using static UnityEditor.PlayerSettings;
-
 public enum ItemType
 {
     Letter,
@@ -178,8 +173,6 @@ public class GameManager : MonoBehaviour
     public GameObject questWindow;
     public GameObject itemObjectPrefeb;
     public InventoryUI inventoryUI;
-    public List<QuestData> quests;
-
 
     //public ItemConfig test;
     // Start is called before the first frame update
@@ -251,17 +244,6 @@ public class GameManager : MonoBehaviour
     {
         EventBus.get().Subscribe<MobDeathEvent>(MobDeath);
         //AddQuest(testQuest, (QuestData q) => { return $"0/{(q as QuestNumber).RequiredAmount}"; });
-    }
-
-    public void AddQuest(QuestData quest, Func<QuestData, string> func)
-    {
-        quests.Add(quest);
-        quest.OnVisualize(func);
-    }
-
-    public bool HasQuest(QuestData questData)
-    {
-        return quests.Contains(questData);
     }
 
     public void LoadScene(string _name)

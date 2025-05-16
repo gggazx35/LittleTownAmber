@@ -20,7 +20,6 @@ public class Movement : MonoBehaviour
     [SerializeField] protected Vector2 direction;
     [SerializeField] private Vector2 exPos;
 
-    private Animator animator;
     private BlackboardFloatProperty runningSpeed;
     private BlackboardFloatProperty fallingSpeed;
 
@@ -31,7 +30,6 @@ public class Movement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
         mob = GetComponent<Mob>();
         Brain brain = GetComponent<Brain>();
 

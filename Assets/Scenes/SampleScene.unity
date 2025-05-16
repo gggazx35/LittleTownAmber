@@ -1346,6 +1346,7 @@ MonoBehaviour:
   info:
     ended: 0
   dialogue: {fileID: 11400000, guid: 93d635ac5dcd3c04e9a3fcc66a55b0c7, type: 2}
+  choiceListener: {fileID: 0}
 --- !u!1 &888104770
 GameObject:
   m_ObjectHideFlags: 0
@@ -2304,6 +2305,10 @@ PrefabInstance:
       propertyPath: m_brain
       value: 
       objectReference: {fileID: 298868917}
+    - target: {fileID: 8684278460045247102, guid: 1dd713c62cbda734499a65c99c8278d3, type: 3}
+      propertyPath: m_items.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9141833829448613294, guid: 1dd713c62cbda734499a65c99c8278d3, type: 3}
       propertyPath: m_LocalPosition.y
       value: -1.1
@@ -3426,7 +3431,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa4730a787cc72046a68fb2d72a975e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySize: 3
+  inventorySize: 0
+  m_items: []
   dropItems: 0
 --- !u!114 &2095474537
 MonoBehaviour:
@@ -3444,6 +3450,18 @@ MonoBehaviour:
   hand: {fileID: 0}
   attack:
     _value: 0
+--- !u!114 &2095474538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2095474517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4819e46eab9e706418d33809377b2211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6805885078697477884
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3531,6 +3549,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4418035827957046075, guid: e8c7c12387917b64998648c4a7e18e3b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2095474536}
+    - targetCorrespondingSourceObject: {fileID: 4418035827957046075, guid: e8c7c12387917b64998648c4a7e18e3b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2095474538}
   m_SourcePrefab: {fileID: 100100000, guid: e8c7c12387917b64998648c4a7e18e3b, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
