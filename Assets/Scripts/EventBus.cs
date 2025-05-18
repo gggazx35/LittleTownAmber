@@ -47,6 +47,8 @@ public class EventBus : MonoBehaviour
 {
 
     private static EventBus instance = null;
+    private static List<EventBus> eventBuses;
+
     private Dictionary<Type, List<Delegate>> eventHandlers;
     private Dictionary<EventID, List<Delegate>> uniqueEventHandlers;
 
@@ -62,6 +64,14 @@ public class EventBus : MonoBehaviour
         Debug.LogWarning(instance);
         return instance;
     }
+
+    //public static void SubscribeGlobal<TEvent>(Action<TEvent> handler) where TEvent : IEvent
+    //{
+    //    foreach(var bus in eventBuses)
+    //    {
+    //        bus.Subscribe(handler);
+    //    }
+    //}
 
     public void Subscribe<TEvent>(Action<TEvent> handler) where TEvent : IEvent
     {
@@ -101,18 +111,18 @@ public class EventBus : MonoBehaviour
         }
     }
 
-    public void Publish<TEvent>(TEvent eventArgs) where TEvent : IEvent
-    {
-        Type eventType = typeof(TEvent);
-        if (eventHandlers.ContainsKey(eventType))
-        {
-            List<Delegate> handlers = eventHandlers[eventType];
-            foreach (var handler in handlers)
-            {
-                ((Action<TEvent>)handler)(eventArgs);
-            }
-        }
-    }
+    //public void Publish<TEvent>(TEvent eventArgs) where TEvent : IEvent
+    //{
+    //    Type eventType = typeof(TEvent);
+    //    if (eventHandlers.ContainsKey(eventType))
+    //    {
+    //        List<Delegate> handlers = eventHandlers[eventType];
+    //        foreach (var handler in handlers)
+    //        {
+    //            ((Action<TEvent>)handler)(eventArgs);
+    //        }
+    //    }
+    //}
 
 
     public void Publish<TEvent>(GameObject gObject, TEvent eventArgs) where TEvent : IEvent

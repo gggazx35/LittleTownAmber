@@ -66,6 +66,7 @@ public struct Sentence
 public struct Dicision
 {
     public string text;
+    public ChoiceEvent choiceEvent;
     public Dialogue then;
 }
 
@@ -200,7 +201,7 @@ public class GameManager : MonoBehaviour
 
         if (e.cause != null && e.reason == DamageReason.None)
         {
-            EventBus.get().Publish(new GameoverEvent($"{headline} {verb} a terrible monster named {e.cause}"));
+            EventBus.get().Publish(gameObject, new GameoverEvent($"{headline} {verb} a terrible monster named {e.cause}"));
         }
         if (e.cause != null && e.reason != DamageReason.None)
         {
@@ -219,7 +220,7 @@ public class GameManager : MonoBehaviour
                     verb = "hit too hard by a stone while she trying to escape from";
                     break;
             }
-            EventBus.get().Publish(new GameoverEvent($"{headline} {verb} a terrible monster named {e.cause}"));
+            EventBus.get().Publish(gameObject, new GameoverEvent($"{headline} {verb} a terrible monster named {e.cause}"));
         }
         if (e.cause == null && e.reason != DamageReason.None)
         {
@@ -235,7 +236,7 @@ public class GameManager : MonoBehaviour
                     verb = " hit too hard by a stone";
                     break;
             }
-            EventBus.get().Publish(new GameoverEvent($"{headline} {verb}"));
+            EventBus.get().Publish(gameObject, new GameoverEvent($"{headline} {verb}"));
         }
         Time.timeScale = 0.0f;
     }

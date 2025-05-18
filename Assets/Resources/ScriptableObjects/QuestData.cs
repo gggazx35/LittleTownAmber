@@ -13,8 +13,8 @@ public class QuestData : ScriptableObject
     {
         if (ui != null)
         {
-            Instantiate(ui, Vector3.zero, Quaternion.identity, GameManager.get().questWindow.transform);
-            var qui = ui.GetComponent<QuestUI>();
+            var uiObj = Instantiate(ui, Vector3.zero, Quaternion.identity, GameManager.get().questWindow.transform);
+            var qui = uiObj.GetComponent<QuestUI>();
             qui.Quest = this;
         }
     }

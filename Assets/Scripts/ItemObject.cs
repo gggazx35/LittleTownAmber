@@ -87,12 +87,29 @@ public class Item
     private int durability;
     private int slot;
     private Inventory inventroy;
+    Blackboard attributes = null;
 
     public Item(ItemTag _itemTag)
     {
         itemTag = _itemTag;
         durability = _itemTag.MaxDurability;
+        _itemTag.AttributeInitialize(attributes);
+    }
 
+    public bool HasAttributes()
+    {
+        return attributes != null;
+    }
+
+    public bool MatchAttributes<T>(string _name, T _otherAttribute)
+    {
+        if (HasAttributes())
+        {
+            var attr = attributes.GetProperty(new TypedID(_name, typeof(T)));
+            if (attr is not IBlackboardMatchable<T>) return false;
+            return (attr as IBlackboardMatchable<T>).IsMatch(_otherAttribute);
+        }
+        return false;
     }
 
     public void Move(Inventory _inventroy, int _slot)

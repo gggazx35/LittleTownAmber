@@ -8,7 +8,7 @@ public interface IDicisionBox
     public void Bind(Dicision _dicision, int _index);
 }
 
-public class DicisionBox : MonoBehaviour, IDicisionBox
+public class DecisionBox : MonoBehaviour, IDicisionBox
 {
     DialogueDisplay display;
     [SerializeField] private Text text;
@@ -32,6 +32,6 @@ public class DicisionBox : MonoBehaviour, IDicisionBox
 
     public void Dicide()
     {        
-        display.EndDicision(index, dicision.then);
+        display.EndDecision(dicision);
     }
 }

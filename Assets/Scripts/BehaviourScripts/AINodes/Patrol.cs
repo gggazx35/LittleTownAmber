@@ -7,10 +7,14 @@ public class Patrol : BehaviourNode
 {
     TypedID isFacingWall;
     Movement movement;
+
+    float movementAxis;
+
     public Patrol(string _facingWall, Movement _movement)
     {
         isFacingWall = new TypedID(_facingWall, typeof(BlackboardBoolProperty));
         movement = _movement;
+        movementAxis = 0.5f;
     }
 
     protected override State Execute(Brain ownerBrain)
@@ -19,11 +23,11 @@ public class Patrol : BehaviourNode
 
         if (facingWall.Get())
         {
-            movement.MoveFacingDirection(-.5f);
+            movementAxis = -movementAxis;
             facingWall.Set(false);
         }
-        else
-            movement.MoveFacingDirection(.5f);
+
+        movement.Move(movementAxis);
 
         return State.RUNNING;
     }

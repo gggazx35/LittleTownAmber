@@ -10,7 +10,7 @@ public class Movement : MonoBehaviour
     [SerializeField] protected float speed = 5f;
     [SerializeField] protected float jumpingPower = 5f;
     [SerializeField] private bool isFacingRight = false;
-    protected Rigidbody2D rb;
+    
     private Mob mob;
     [SerializeField] private Transform hand;
 
@@ -25,6 +25,7 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private float tet;
 
+    protected Rigidbody2D rb;
     public Transform GroundCheck => groundCheck;
     // Start is called before the first frame update
     void Start()
@@ -43,27 +44,30 @@ public class Movement : MonoBehaviour
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(moveAxis.x * speed, rb.velocity.y);
-        //var h = HeadHit();
-        //if (h != null)
-        //{
-        //    Debug.Log("Auto");
-        //    mob.TakeDamage(DamageReason.None, h.GetComponent<PhysicalDamageObject>().CalcuateDamage());
-        //} 
-
-        
-
-
         
         fallingSpeed.Set(rb.velocity.y);
-        if ((transform.position.x > exPos.x || transform.position.x < exPos.x) && (moveAxis.x > 0.0f || moveAxis.x < 0.0f))
-        {
-            runningSpeed.Set(Mathf.Abs(moveAxis.x));
 
-        }
-        else
+        if(transform.position.x < exPos.x && moveAxis.x < 0.0f)
         {
-            runningSpeed.Set(0.0f);
+            Vector3 localScale = transform.localScale;
+            localScale.x = -1f;
+            transform.localScale = localScale;
+
+            isFacingRight = true;
+            runningSpeed.Set(Mathf.Abs(moveAxis.x));
+        } 
+        else if (transform.position.x > exPos.x && moveAxis.x > 0.0f)
+        {
+            Vector3 localScale = transform.localScale;
+            localScale.x = 1f;
+            transform.localScale = localScale;
+
+            isFacingRight = false;
+            runningSpeed.Set(Mathf.Abs(moveAxis.x));
         }
+        else runningSpeed.Set(0.0f);
+
+
 
         tet = runningSpeed.Get();
         
@@ -104,30 +108,6 @@ public class Movement : MonoBehaviour
         PointAt();
     }
 
-    public void UpdateFlip()
-    {
-        if((isFacingRight && direction.x < 0.1f) || (!isFacingRight && direction.x > 0.1f))
-        {
-            Flip();
-        }
-        /*if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
-        {
-            Flip();
-        }*/
-    }
-
-    public void PlayerFlip()
-    {
-        if (moveAxis.x < 0f && !isFacingRight)
-        {
-            Flip();
-        }
-
-        if (moveAxis.x > 0f && isFacingRight)
-        {
-            Flip();
-        }
-    }
     public void Flip()
     {
         isFacingRight = !isFacingRight;
@@ -136,9 +116,14 @@ public class Movement : MonoBehaviour
         transform.localScale = localScale;
     }
 
-    public void MoveByAxis(float x)
+    public void Face(bool _right)
     {
-        moveAxis.x = x;
+        if (isFacingRight != _right)
+        {
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
     }
 
     public void Move(float x)

@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Dialogue Data 1
   m_EditorClassIdentifier: 
   lines:
-  - text: aye want me to help ya?
+  - text: you're gonna die
   dicisions:
-  - text: Yes daddy
+  - text: Yes
+    choiceEvent:
+      choice: 1
     then: {fileID: 11400000, guid: 888bdd44b202f254ab470222ebef48a5, type: 2}

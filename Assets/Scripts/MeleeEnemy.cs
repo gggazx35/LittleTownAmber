@@ -17,6 +17,6 @@ public class MeleeEnemy : Mob
 
     private void FixedUpdate()
     {
-        movement.PlayerFlip();
+        //movement.PlayerFlip();
     }
 }

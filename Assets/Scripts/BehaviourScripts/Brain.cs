@@ -99,6 +99,7 @@ public class Brain : MonoBehaviour
             );
     }
 
+
     private void FixedUpdate()
     {
         timer = Time.fixedDeltaTime;

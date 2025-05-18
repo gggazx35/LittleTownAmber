@@ -47,7 +47,6 @@ public class ObjectHighlightLeave : IEvent
 public class Player : Mob
 {
     bool OnLadder;
-    bool Attack;
     Animator animator;
     UsingWeapon weapon;
 
@@ -58,7 +57,6 @@ public class Player : Mob
         m_inventroy = GetComponent<Inventory>();
         weapon = GetComponent<UsingWeapon>();
         OnLadder = false;
-        Attack = false;
         GameManager.instance.inventoryUI.SetInventory(inventroy);
         movement = GetComponent<Movement>();
     }
@@ -83,7 +81,10 @@ public class Player : Mob
     void Update()
     {
         if (weapon.IsAttack()) { movement.Move(0.0f); return; }
+
         movement.Move(Input.GetAxisRaw("Horizontal"));
+
+
         if (Input.GetMouseButtonDown(0))
         {
             if(GetHoldingItem()?.GetItemTag() is WeaponItemTag)
@@ -203,7 +204,7 @@ public class Player : Mob
         Vector3 mousePosition = Input.mousePosition;
 
         movement.Target(Camera.main.ScreenToWorldPoint(mousePosition));
-        movement.PlayerFlip();
+       // movement.PlayerFlip();
         if (hihit == null) {
             RaycastHit2D hit = RaycastAt(LayerMask.GetMask("Interactive"));
             if (hit) { hihit = hit.transform.gameObject; EventBus.get().Publish(hihit, new ObjectHighlight()); }

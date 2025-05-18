@@ -55,7 +55,7 @@ public class MeleeAI : MonoBehaviour
         {
             Patrol();
         }
-        movement.PlayerFlip();
+        //movement.PlayerFlip();
     }
 
     void EnemyLogic()

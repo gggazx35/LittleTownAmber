@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class QuestUI : MonoBehaviour
 {
-    private QuestData quest;
+    [SerializeField] private QuestData quest;
     [SerializeField] protected Text descriptionText;
     public QuestData Quest { get => quest; set { quest = value; } }
 
-    private void Start()
+    protected virtual void Visualize()
     {
         descriptionText.text = quest.Description;
     }

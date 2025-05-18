@@ -69,7 +69,7 @@ public class Inventory : MonoBehaviour
             {
                 items[i] = _item;
                 _item.Move(this, i);
-                EventBus.get().Publish(new InventoryChangeEvent(this));
+                EventBus.get().Publish(gameObject, new InventoryChangeEvent(this));
                 return _item;
             }
         }
@@ -83,7 +83,7 @@ public class Inventory : MonoBehaviour
         Item item = items[i];
         //item.Move(null, -1);
         items[i] = null;
-        EventBus.get().Publish(new InventoryChangeEvent(this));
+        EventBus.get().Publish(gameObject, new InventoryChangeEvent(this));
         return item;
     }
 
@@ -107,6 +107,32 @@ public class Inventory : MonoBehaviour
         foreach (Item item in items)
         {
             if(item.type == itemType)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int CountItemNumberWithAttribute<T>(ItemType itemType, string _attributeName, T _value)
+    {
+        int count = 0;
+        foreach (Item item in items)
+        {
+            if (item.type == itemType && item.MatchAttributes(_attributeName, _value))
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int CountItemNumberWithAttribute<T>(string _attributeName, T _value)
+    {
+        int count = 0;
+        foreach (Item item in items)
+        {
+            if (item.MatchAttributes(_attributeName, _value))
             {
                 count++;
             }

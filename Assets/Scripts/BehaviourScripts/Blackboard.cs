@@ -22,6 +22,12 @@ public struct TypedID {
         type = _type;
     }
 }
+
+public interface IBlackboardMatchable<T>
+{
+    public bool IsMatch(T _other);
+}
+
 public class TypedIDComparser : IEqualityComparer<TypedID>
 {
 
@@ -55,7 +61,8 @@ public abstract class BlackboardPropertyBasicTypeBase : BlackboardProperty
     }
 }
 
-public class BlackboardIntProperty : BlackboardPropertyBasicTypeBase
+public class BlackboardIntProperty : BlackboardPropertyBasicTypeBase, IBlackboardMatchable<BlackboardIntProperty>, 
+    IBlackboardMatchable<int>
 {
     private int _value;
 
@@ -75,10 +82,23 @@ public class BlackboardIntProperty : BlackboardPropertyBasicTypeBase
         if(linkedAnim != null) linkedAnim.SetInteger(name, value);
         _value = value;
     }
+
+    public bool IsMatch(BlackboardIntProperty _other)
+    {
+        if (_value == _other.Get()) return true;
+        return false;
+    }
+
+    public bool IsMatch(int _other)
+    {
+        if (_value == _other) return true;
+        return false;
+    }
 }
 
 [Serializable]
-public class BlackboardBoolProperty : BlackboardPropertyBasicTypeBase
+public class BlackboardBoolProperty : BlackboardPropertyBasicTypeBase, IBlackboardMatchable<BlackboardBoolProperty>,
+    IBlackboardMatchable<bool>
 {
     [SerializeField] private bool _value;
 
@@ -97,6 +117,18 @@ public class BlackboardBoolProperty : BlackboardPropertyBasicTypeBase
     {
         if (linkedAnim != null) linkedAnim.SetBool(name, value);
         _value = value;
+    }
+
+    public bool IsMatch(BlackboardBoolProperty _other)
+    {
+        if(_value == _other.Get()) { return true; }
+        return false;
+    }
+
+    public bool IsMatch(bool _other)
+    {
+        if (_value == _other) { return true; }
+        return false;
     }
 }
 
@@ -122,9 +154,15 @@ public class BlackboardFloatProperty : BlackboardPropertyBasicTypeBase
     }
 }
 
-public class BlackboardStringProperty : BlackboardProperty
+public class BlackboardStringProperty : BlackboardProperty, IBlackboardMatchable<BlackboardStringProperty>,
+    IBlackboardMatchable<string>
 {
     private string _value;
+
+    public BlackboardStringProperty(string value)
+    {
+        _value=value;
+    }
 
     public string Get()
     {
@@ -134,6 +172,18 @@ public class BlackboardStringProperty : BlackboardProperty
     public void Set(string value)
     {
         _value = value;
+    }
+
+    public bool IsMatch(BlackboardStringProperty _other)
+    {
+        if(_value == _other.Get()) return true;
+        return false;
+    }
+
+    public bool IsMatch(string _other)
+    {
+        if (_value == _other) return true;
+        return false;
     }
 }
 

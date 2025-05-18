@@ -72,31 +72,28 @@ public class DialoguePair
         return this;
     }
 
-    public bool Run(ref DialoguePair _dialoguep, int _i, Dialogue _dialogue)
+    public bool Run(ref Dialogue _dialogue)
     {
-        _dialoguep = next;
-        if(next.dialogue == null) next.dialogue = _dialogue;
+        dialogue = _dialogue;
         return next != null;
     }
 }
 
+[Serializable]
 public class ChoiceEvent : IEvent
 {
-    private int choice;
-    public int Choice => choice;
-    public ChoiceEvent(int _choice)
-    {
-        choice = _choice;
-    }
+    [SerializeField] private EDecision choice;
+
+    public EDecision Choice => choice;
 }
 
 public class DialogueDisplay : MonoBehaviour
 {
     private Queue<DialoguePair> dialogueQueue = new Queue<DialoguePair>();
     private DialoguePair currentDialogue;
-    [SerializeField] private DicisionBox[] dicisionTexts;
+    [SerializeField] private DecisionBox[] decisionTexts;
     private Text text;
-    private bool hasDicisions;
+    private bool hasDecisions;
     IEnumerator coroutine;
     [SerializeField] private DialogueInfo info;
     [SerializeField] private Dialogue dialogue;
@@ -107,19 +104,16 @@ public class DialogueDisplay : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        info = new DialogueInfo();
+
+        hasDecisions = false;
+        text = GetComponent<Text>();
+        foreach (var decision in decisionTexts)
+        {
+            decision.SetDisplay(this);
+        }
     }
 
-    private void Start()
-    {
-        hasDicisions = false;
-        text = GetComponent<Text>();
-        foreach (var dicision in dicisionTexts)
-        {
-            dicision.SetDisplay(this);
-        }
-        
-        //
-    }
 
     private void Update()
     {
@@ -133,46 +127,39 @@ public class DialogueDisplay : MonoBehaviour
     {
         int count = dialogueQueue.Count;
         dialogueQueue.Enqueue(_dialoguePair);
+
+        choiceListener = _gameObject;
+
         if (count == 0) { NextPage(); Next(); }
-        //currentDialogue = _dialoguePair;
-        /*
-        foreach (var item in _dialogue.lines)
-        {
-            displayString = item.text;
-            for(int i = 0; i < item.dicisions.Length; i++)
-            {
-                dicisionTexts[i].Bind(this, item.dicisions[i]);
-            }
-        }*/
+
         return;
     }
 
     public void Next()
     {
-        if (hasDicisions) { return; }
+        if (hasDecisions) { return; }
 
         if (coroutine.MoveNext())
         {
-            hasDicisions = currentDialogue.dialogue.BindDicisions(dicisionTexts);
+            hasDecisions = currentDialogue.dialogue.BindDicisions(decisionTexts);
             StartCoroutine(FormatReader.TypeText(text, ((Sentence)coroutine.Current).text, info));
         } else
             NextPage();
     }
 
-    public void EndDicision(int _dicision, Dialogue _dialogueConfig)
+    public void EndDecision(Dicision _decision)
     {
-        foreach (var item in dicisionTexts)
+        foreach (var item in decisionTexts)
         {
             item.gameObject.SetActive(false);
         }
-        hasDicisions = false;
-        if (currentDialogue.Run(ref currentDialogue, _dicision, _dialogueConfig)) 
+        hasDecisions = false;
+        if (_decision.then != null)
         {
-
+            currentDialogue.dialogue = _decision.then;
             coroutine = currentDialogue.dialogue.Continue();
         }
-        EventBus.get().Publish(choiceListener, new ChoiceEvent(_dicision));
-            //.Run(_dicision);
+        EventBus.get().Publish(choiceListener, _decision.choiceEvent);
     }
 
     public void NextPage()

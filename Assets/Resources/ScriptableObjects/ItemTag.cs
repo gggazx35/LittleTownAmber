@@ -24,6 +24,10 @@ public class ItemTag : ScriptableObject
     [SerializeField] private ItemType kind;
     public ItemType Kind { get { return kind; } }
 
+    public virtual void AttributeInitialize(Blackboard _attributes) {
+        if (_attributes == null) _attributes = new Blackboard();
+    }
+
     public Item Create()
     {
         return new Item(this);
