@@ -3,14 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+
 public class QuestNumberUI : QuestUI
 {
     [SerializeField] protected Text amountText;
     [SerializeField] protected int currentAmount = 0;
     // Update is called once per frame
-    void FixedUpdate()
+    void Start()
     {
-        QuestNumber();
+        EventBus.get().Subscribe<InventoryChangeEvent>(GameManager.get().player.gameObject, onChange);
+        Visualize();
+    }
+    
+    void onChange(InventoryChangeEvent e)
+    {
+        //currentAmount = e.Inventory.CountItemNumberWithAttribute(ItemType.Paper, "colorName", "white");
+        currentAmount = e.Inventory.CountItemNumberWithType(ItemType.Dagger);
+        Visualize();
     }
 
     protected override void Visualize()

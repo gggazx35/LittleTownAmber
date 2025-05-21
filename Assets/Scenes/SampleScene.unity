@@ -177,7 +177,7 @@ PrefabInstance:
     - target: {fileID: 6782758388329843289, guid: 1dd713c62cbda734499a65c99c8278d3, type: 3}
       propertyPath: m_brain
       value: 
-      objectReference: {fileID: 951902790}
+      objectReference: {fileID: 0}
     - target: {fileID: 8684278460045247102, guid: 1dd713c62cbda734499a65c99c8278d3, type: 3}
       propertyPath: m_items.Array.size
       value: 0
@@ -191,9 +191,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1319504490133728788, guid: 1dd713c62cbda734499a65c99c8278d3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 951902790}
     - targetCorrespondingSourceObject: {fileID: 1319504490133728788, guid: 1dd713c62cbda734499a65c99c8278d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 951902802}
@@ -1058,6 +1055,7 @@ MonoBehaviour:
   items:
   - {fileID: 11400000, guid: c1415d1488d069e4e8dd37b00032bf69, type: 2}
   - {fileID: 11400000, guid: c1415d1488d069e4e8dd37b00032bf69, type: 2}
+  - {fileID: 11400000, guid: c1415d1488d069e4e8dd37b00032bf69, type: 2}
 --- !u!61 &705863967
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1734,30 +1732,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1319504490133728788, guid: 1dd713c62cbda734499a65c99c8278d3, type: 3}
   m_PrefabInstance: {fileID: 114260973}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &951902790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 951902788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38a1777b1f4b4184b87294d9373d1528, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: 0
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 128
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 64
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 64
-  scopeRadius: 6
-  movement: {fileID: 0}
 --- !u!114 &951902802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2531,7 +2505,7 @@ MonoBehaviour:
   talkingBox: {fileID: 616900637}
   dialogueFirstQuestAchieved: {fileID: 0}
   dialogueFirstMeet: {fileID: 11400000, guid: 93d635ac5dcd3c04e9a3fcc66a55b0c7, type: 2}
-  findingWhitePaperQuest: {fileID: 11400000, guid: 478e4c4e22f03094daadc077f3d3df5a, type: 2}
+  findingWhitePaperQuest: {fileID: 11400000, guid: ba3641f3ef196d54086086550dd70aed, type: 2}
 --- !u!212 &1394465066
 SpriteRenderer:
   m_ObjectHideFlags: 0

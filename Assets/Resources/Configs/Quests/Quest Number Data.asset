@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Quest Number Data
   m_EditorClassIdentifier: 
   description: lets do it
-  ui: {fileID: 3292998732306684060, guid: e3b68b40a09910e48a3e0c0b90466829, type: 3}
+  ui: {fileID: 3292998732306684060, guid: 2e69e3c2b2622804e8ae5decd46a1888, type: 3}
   requiredAmount: 34
